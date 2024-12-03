@@ -9,7 +9,7 @@
 Pod::Spec.new do |s|
   s.name             = 'VMOS'
   s.version          = '0.1.0'
-  s.summary          = 'A short description of VMOS.'
+  s.summary          = 'A iOS Extention Library.'
 
 # This description is used to generate tags and improve search results.
 #   * Think: What does it do? Why did you write it? What is the focus?
@@ -24,19 +24,31 @@ TODO: Add long description of the pod here.
   s.homepage         = 'https://github.com/ItghostFans/VMOS'
   # s.screenshots     = 'www.example.com/screenshots_1', 'www.example.com/screenshots_2'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
-  s.author           = { 'ItghostFans' => 'fanchunxing1@joyy.com' }
+  s.author           = { 'ItghostFans' => 'ItghostFans@gmail.com' }
   s.source           = { :git => 'https://github.com/ItghostFans/VMOS.git', :tag => s.version.to_s }
   # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
 
-  s.ios.deployment_target = '10.0'
+  s.ios.deployment_target = '13.0'
 
-  s.source_files = 'VMOS/Classes/**/*'
+  s.default_subspec = 'UIKit'
+  s.preserve_paths = '**'
+  
+  s.subspec 'Foundation' do |subspec|
+    subspec.source_files = 'VMOS/Classes/Foundation/**/*', 'VMOS/Private/Foundation/**/*.h'
+    subspec.private_header_files = 'VMOS/Private/Foundation/**/*.h'
+  end
+  
+  s.subspec 'UIKit' do |subspec|
+    subspec.source_files = 'VMOS/Classes/UIKit/**/*', 'VMOS/Private/UIKit/**/*.h'
+    subspec.private_header_files = 'VMOS/Private/UIKit/**/*.h'
+    subspec.dependency 'VMOS/Foundation'
+  end
   
   # s.resource_bundles = {
   #   'VMOS' => ['VMOS/Assets/*.png']
   # }
 
   # s.public_header_files = 'Pod/Classes/**/*.h'
-  # s.frameworks = 'UIKit', 'MapKit'
+  s.frameworks = 'UIKit', 'Foundation'
   # s.dependency 'AFNetworking', '~> 2.3'
 end

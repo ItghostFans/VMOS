@@ -1,5 +1,5 @@
 //
-//  VMViewController.h
+//  AppDelegate.h
 //  VMOS
 //
 //  Created by ItghostFans on 12/03/2024.
@@ -8,6 +8,8 @@
 
 @import UIKit;
 
-@interface VMViewController : UIViewController
+@interface AppDelegate : UIResponder <UIApplicationDelegate>
+
+@property (strong, nonatomic) UIWindow *window;
 
 @end

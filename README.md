@@ -22,7 +22,7 @@ pod 'VMOS'
 
 ## Author
 
-ItghostFans, fanchunxing1@joyy.com
+ItghostFans, ItghostFans@gmail.com
 
 ## License
 

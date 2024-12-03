@@ -1,14 +1,14 @@
 //
-//  VMAppDelegate.m
+//  AppDelegate.m
 //  VMOS
 //
 //  Created by ItghostFans on 12/03/2024.
 //  Copyright (c) 2024 ItghostFans. All rights reserved.
 //
 
-#import "VMAppDelegate.h"
+#import "AppDelegate.h"
 
-@implementation VMAppDelegate
+@implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
