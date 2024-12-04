@@ -81,46 +81,163 @@
     const void * sel = @selector(gradient_layer);
     CAGradientLayer *gradient_layer = objc_getAssociatedObject(self, sel);
     if (gradient_layer) {
+        [CATransaction begin];
+        gradient_layer.frame = self.bounds;
+        [CATransaction setDisableActions:NO];
         CGFloat gradient_angle = self.gradient_angle;
-        if (0.0f < gradient_angle && gradient_angle < (45.0f * M_PI / 180.0f)) {
+        if (0.0f < gradient_angle && gradient_angle < 2 * M_PI) {
             const CGFloat width = CGRectGetWidth(self.bounds);
             const CGFloat height = CGRectGetHeight(self.bounds);
             const CGPoint center = CGPointMake(width / 2, height / 2);
-            
+                
+            CGFloat vRad_2 = atanf(center.x / center.y);        // 上下三角半弧度
+            CGFloat hRad_2 = atanf(center.y / center.x);        // 左右三角半弧度
+            CGFloat originRad = 0.0f;                           // 原始设置的弧度
             if (self.gradient_startPoint.y == 0.0f && self.gradient_endPoint.y == 1.0f) {
-                if (self.gradient_startPoint.x == 0.5f && self.gradient_endPoint.x == 0.5f) {
-                    CGFloat x = center.x - tanf(gradient_angle) * center.y;
-                    CGFloat startX = (width - x) / width;
-                    CGFloat endX = (x) / width;
-                    gradient_layer.startPoint = CGPointMake(startX, 0.0f);
-                    gradient_layer.endPoint = CGPointMake(endX, 1.0f);
+                // 下三角
+                CGFloat a = 0.0f;
+                if (self.gradient_startPoint.x < 0.5f) {
+                    a = center.x - self.gradient_startPoint.x * width;
+                    originRad = hRad_2 + vRad_2 - atanf(a / center.y);
                 } else {
-                    CGFloat angle = atanf(center.x / center.y);
-                    CGFloat x = center.x - tanf(angle - gradient_angle) * center.y;
-                    CGFloat startX = (x) / width;
-                    CGFloat endX = (width - x) / width;
-                    gradient_layer.startPoint = CGPointMake(startX, 0.0f);
-                    gradient_layer.endPoint = CGPointMake(endX, 1.0f);
+                    a = self.gradient_startPoint.x * width - center.x;
+                    originRad = hRad_2 + vRad_2 + atanf(a / center.y);
                 }
             } else
-            if (self.gradient_startPoint.x == 0.0f && self.gradient_endPoint.x == 1.0f) {
-                if (self.gradient_startPoint.y == 0.5f && self.gradient_endPoint.y == 0.5f) {
-                    CGFloat y = center.y - tanf(gradient_angle) * center.x;
-                    CGFloat startY = (y) / height;
-                    CGFloat endY = (height - y) / height;
-                    gradient_layer.startPoint = CGPointMake(0.0f, startY);
-                    gradient_layer.endPoint = CGPointMake(1.0f, endY);
+            if (self.gradient_startPoint.y == 1.0f && self.gradient_endPoint.y == 0.0f) {
+                // 下三角
+                CGFloat a = 0.0f;
+                if (self.gradient_startPoint.x < 0.5f) {
+                    a = center.x - self.gradient_startPoint.x * width;
+                    originRad = M_PI_2 + M_PI + atanf(a / center.y);
                 } else {
-                    CGFloat angle = atanf(center.y / center.x);
-                    CGFloat y = center.y - tanf(angle - gradient_angle) * center.x;
-                    CGFloat startY = (height - y) / height;
-                    CGFloat endY = (y) / height;
-                    gradient_layer.startPoint = CGPointMake(0.0f, startY);
-                    gradient_layer.endPoint = CGPointMake(1.0f, endY);
+                    a = self.gradient_startPoint.x * width - center.x;
+                    originRad = M_PI_2 + M_PI - atanf(a / center.y);
+                }
+            } else
+            if ((self.gradient_startPoint.x == 0.0f && self.gradient_endPoint.x == 1.0f)
+                ) {
+                // 左三角
+                CGFloat a = 0.0f;
+                if (self.gradient_startPoint.y < 0.5f) {
+                    a = center.y - self.gradient_startPoint.y * height;
+                    originRad = atanf(a / center.x);
+                } else {
+                    a = self.gradient_startPoint.y * height - center.y;
+                    originRad = 2 * M_PI - atanf(a / center.x);
+                }
+            } else
+            if (self.gradient_startPoint.x == 1.0f && self.gradient_endPoint.x == 0.0f) {
+                // 右三角
+                CGFloat a = 0.0f;
+                if (self.gradient_startPoint.y < 0.5f) {
+                    a = center.y - self.gradient_startPoint.y * height;
+                    originRad = M_PI - atanf(a / center.x);
+                } else {
+                    a = self.gradient_startPoint.y * height - center.y;
+                    originRad = M_PI + atanf(a / center.x);
                 }
             }
+            
+            CGFloat rad = originRad + gradient_angle;
+            if (rad > 2 * M_PI) {
+                rad -= 2 * M_PI;
+            }
+#ifdef DEBUG
+            NSLog(@"Rad: %f", rad);
+#endif // #ifdef DEBUG
+            
+            if (hRad_2 < rad && rad < hRad_2 + (vRad_2 * 2)) {
+                // 上三角
+                CGFloat x = 0.0f;
+                if (rad < M_PI_2) {
+                    x = center.x - tanf(M_PI_2 - rad) * center.y;
+                } else {
+                    x = center.x + tanf(rad - M_PI_2) * center.y;
+                }
+                gradient_layer.startPoint = CGPointMake(floor(x) / width, 0.0f);
+                gradient_layer.endPoint = CGPointMake((width - floor(x)) / width, 1.0f);
+                if (gradient_layer.endPoint.x == 0.0f) {
+                    NSLog(@"");
+                }
+            } else
+            if (hRad_2 + (vRad_2 * 2) <= rad && rad <= hRad_2 + M_PI) {
+                // 右三角
+                CGFloat y = 0.0f;
+                if (rad < M_PI) {
+                    y = center.y - tanf(M_PI - rad) * center.x;
+                } else {
+                    y = center.y + tanf(rad - M_PI) * center.x;
+                }
+                gradient_layer.startPoint = CGPointMake(1.0f, ceil(y) / height);
+                gradient_layer.endPoint = CGPointMake(0.0f, (height - ceil(y)) / height);
+                if (gradient_layer.endPoint.y == 0.0f) {
+                    NSLog(@"");
+                }
+            } else
+            if (hRad_2 + M_PI < rad && rad < hRad_2 + (vRad_2 * 2) + M_PI) {
+                // 下三角
+                CGFloat x = 0.0f;
+                if (rad > M_PI + M_PI_2) {
+                    x = center.x - tanf(rad - (M_PI + M_PI_2)) * center.y;
+                } else {
+                    x = center.x + tanf((M_PI + M_PI_2) - rad) * center.y;
+                }
+                gradient_layer.startPoint = CGPointMake(floor(x) / width, 1.0f);
+                gradient_layer.endPoint = CGPointMake((width - floor(x)) / width, 0.0f);
+                if (gradient_layer.endPoint.x == 1.0f) {
+                    NSLog(@"");
+                }
+            } else {
+                // 左三角
+                CGFloat y = 0.0f;
+                if (rad <= hRad_2) {
+                    y = center.y - tanf(rad) * center.x;
+                } else
+                if (rad >= 2 * M_PI - hRad_2){
+                    y = center.y + tanf(2 * M_PI - rad) * center.x;
+                }
+                gradient_layer.startPoint = CGPointMake(0.0f, ceil(y) / height);
+                gradient_layer.endPoint = CGPointMake(1.0f, (height - ceil(y)) / height);
+                if (gradient_layer.endPoint.y == 1.0f) {
+                    NSLog(@"");
+                }
+            }
+            [CATransaction commit];
+            
+//            if (self.gradient_startPoint.y == 0.0f && self.gradient_endPoint.y == 1.0f) {
+//                if (self.gradient_startPoint.x == 0.5f && self.gradient_endPoint.x == 0.5f) {
+//                    CGFloat x = center.x - tanf(gradient_angle) * center.y;
+//                    CGFloat startX = (width - x) / width;
+//                    CGFloat endX = (x) / width;
+//                    gradient_layer.startPoint = CGPointMake(startX, 0.0f);
+//                    gradient_layer.endPoint = CGPointMake(endX, 1.0f);
+//                } else {
+//                    CGFloat angle = atanf(center.x / center.y);
+//                    CGFloat x = center.x - tanf(angle - gradient_angle) * center.y;
+//                    CGFloat startX = (x) / width;
+//                    CGFloat endX = (width - x) / width;
+//                    gradient_layer.startPoint = CGPointMake(startX, 0.0f);
+//                    gradient_layer.endPoint = CGPointMake(endX, 1.0f);
+//                }
+//            } else
+//            if (self.gradient_startPoint.x == 0.0f && self.gradient_endPoint.x == 1.0f) {
+//                if (self.gradient_startPoint.y == 0.5f && self.gradient_endPoint.y == 0.5f) {
+//                    CGFloat y = center.y - tanf(gradient_angle) * center.x;
+//                    CGFloat startY = (y) / height;
+//                    CGFloat endY = (height - y) / height;
+//                    gradient_layer.startPoint = CGPointMake(0.0f, startY);
+//                    gradient_layer.endPoint = CGPointMake(1.0f, endY);
+//                } else {
+//                    CGFloat angle = atanf(center.y / center.x);
+//                    CGFloat y = center.y - tanf(angle - gradient_angle) * center.x;
+//                    CGFloat startY = (height - y) / height;
+//                    CGFloat endY = (y) / height;
+//                    gradient_layer.startPoint = CGPointMake(0.0f, startY);
+//                    gradient_layer.endPoint = CGPointMake(1.0f, endY);
+//                }
+//            }
         }
-        gradient_layer.frame = self.bounds;
     }
 }
 
