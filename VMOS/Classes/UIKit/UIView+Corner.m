@@ -31,23 +31,23 @@
 
 - (UIRectCorner)corner_corners {
     const void * sel = @selector(corner_corners);
-    NSNumber *corners = objc_getAssociatedObject(self, sel);
-    return corners.unsignedIntegerValue;
+    return [objc_getAssociatedObject(self, sel) unsignedIntegerValue];
 }
 
 - (void)setCorner_corners:(UIRectCorner)corner_corners {
     const void * sel = @selector(corner_corners);
+    [self corner_layer];
     objc_setAssociatedObject(self, sel, @(corner_corners), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
 - (CGSize)corner_radius {
     const void * sel = @selector(corner_radius);
-    NSValue *cornerRadius = objc_getAssociatedObject(self, sel);
-    return cornerRadius.CGSizeValue;
+    return [objc_getAssociatedObject(self, sel) CGSizeValue];
 }
 
 - (void)setCorner_radius:(CGSize)corner_radius {
     const void * sel = @selector(corner_radius);
+    [self corner_layer];
     objc_setAssociatedObject(self, sel, [NSValue valueWithCGSize:corner_radius], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
@@ -56,6 +56,9 @@
     const void * sel = @selector(corner_layer);
     CAShapeLayer *corner_layer = objc_getAssociatedObject(self, sel);
     if (corner_layer) {
+        if (CGRectEqualToRect(self.bounds, corner_layer.frame)) {
+            return; // 已经设置了这个了，不必要再处理。
+        }
         corner_layer.frame = self.bounds;
         corner_layer.path = [UIBezierPath bezierPathWithRoundedRect:self.bounds byRoundingCorners:self.corner_corners cornerRadii:self.corner_radius].CGPath;
     }

@@ -33,8 +33,8 @@
         NSInteger columnIndex = index % column;
         cornerView = [[UIView alloc] initWithFrame:CGRectMake((spacing + line) * columnIndex + spacing, 60.0f + (rowIndex * (line + spacing)), line, line)];
         cornerView.backgroundColor = UIColor.grayColor;
-    //    cornerView.corner_radius = CGSizeMake(20.0f, 50.0f);
-    //    cornerView.corner_corners = UIRectCornerTopLeft | UIRectCornerBottomRight;
+        cornerView.corner_radius = CGSizeMake(20.0f, 50.0f);
+        cornerView.corner_corners = UIRectCornerTopLeft | UIRectCornerBottomRight;
         [self.view addSubview:cornerView];
         UIView *gradientView = cornerView;
     //    UIView *gradientView = [[UIView alloc] initWithFrame:CGRectMake(10.0f, 160.0f, 100.0f, 100.0f)];

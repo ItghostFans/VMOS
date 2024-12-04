@@ -204,39 +204,6 @@
                 }
             }
             [CATransaction commit];
-            
-//            if (self.gradient_startPoint.y == 0.0f && self.gradient_endPoint.y == 1.0f) {
-//                if (self.gradient_startPoint.x == 0.5f && self.gradient_endPoint.x == 0.5f) {
-//                    CGFloat x = center.x - tanf(gradient_angle) * center.y;
-//                    CGFloat startX = (width - x) / width;
-//                    CGFloat endX = (x) / width;
-//                    gradient_layer.startPoint = CGPointMake(startX, 0.0f);
-//                    gradient_layer.endPoint = CGPointMake(endX, 1.0f);
-//                } else {
-//                    CGFloat angle = atanf(center.x / center.y);
-//                    CGFloat x = center.x - tanf(angle - gradient_angle) * center.y;
-//                    CGFloat startX = (x) / width;
-//                    CGFloat endX = (width - x) / width;
-//                    gradient_layer.startPoint = CGPointMake(startX, 0.0f);
-//                    gradient_layer.endPoint = CGPointMake(endX, 1.0f);
-//                }
-//            } else
-//            if (self.gradient_startPoint.x == 0.0f && self.gradient_endPoint.x == 1.0f) {
-//                if (self.gradient_startPoint.y == 0.5f && self.gradient_endPoint.y == 0.5f) {
-//                    CGFloat y = center.y - tanf(gradient_angle) * center.x;
-//                    CGFloat startY = (y) / height;
-//                    CGFloat endY = (height - y) / height;
-//                    gradient_layer.startPoint = CGPointMake(0.0f, startY);
-//                    gradient_layer.endPoint = CGPointMake(1.0f, endY);
-//                } else {
-//                    CGFloat angle = atanf(center.y / center.x);
-//                    CGFloat y = center.y - tanf(angle - gradient_angle) * center.x;
-//                    CGFloat startY = (height - y) / height;
-//                    CGFloat endY = (y) / height;
-//                    gradient_layer.startPoint = CGPointMake(0.0f, startY);
-//                    gradient_layer.endPoint = CGPointMake(1.0f, endY);
-//                }
-//            }
         }
     }
 }
