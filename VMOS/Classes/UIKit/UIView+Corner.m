@@ -53,8 +53,12 @@
 
 - (void)corner_layoutSubviews {
     [self corner_layoutSubviews];
-    self.corner_layer.frame = self.bounds;
-    self.corner_layer.path = [UIBezierPath bezierPathWithRoundedRect:self.bounds byRoundingCorners:self.corner_corners cornerRadii:self.corner_radius].CGPath;
+    const void * sel = @selector(corner_layer);
+    CAShapeLayer *corner_layer = objc_getAssociatedObject(self, sel);
+    if (corner_layer) {
+        corner_layer.frame = self.bounds;
+        corner_layer.path = [UIBezierPath bezierPathWithRoundedRect:self.bounds byRoundingCorners:self.corner_corners cornerRadii:self.corner_radius].CGPath;
+    }
 }
 
 @end

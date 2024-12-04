@@ -248,6 +248,9 @@
 				LastUpgradeCheck = 0720;
 				ORGANIZATIONNAME = ItghostFans;
 				TargetAttributes = {
+					6003F589195388D20070C39A = {
+						DevelopmentTeam = 4C39GTGS9D;
+					};
 					6003F5AD195388D20070C39A = {
 						TestTargetID = 6003F589195388D20070C39A;
 					};
@@ -519,6 +522,7 @@
 			baseConfigurationReference = 506FAF18CBB769490BFE528B /* Pods-VMOS_Example.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = 4C39GTGS9D;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "VMOS/VMOS-Prefix.pch";
 				INFOPLIST_FILE = "VMOS/VMOS-Info.plist";
@@ -536,6 +540,7 @@
 			baseConfigurationReference = 0412935BC094CE3CFBD028FF /* Pods-VMOS_Example.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = 4C39GTGS9D;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "VMOS/VMOS-Prefix.pch";
 				INFOPLIST_FILE = "VMOS/VMOS-Info.plist";
