@@ -24,14 +24,15 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    CGFloat line = 60.0f;
+    CGFloat width = 60.0f;
+    CGFloat height = 120.0f;
     CGFloat spacing = 5.0f;
     NSInteger column = 4;
     UIView *cornerView;
     for (NSInteger index = 0; index < 1; ++index) {
         NSInteger rowIndex = index / column;
         NSInteger columnIndex = index % column;
-        cornerView = [[UIView alloc] initWithFrame:CGRectMake((spacing + line) * columnIndex + spacing, 60.0f + (rowIndex * (line + spacing)), line, line)];
+        cornerView = [[UIView alloc] initWithFrame:CGRectMake((spacing + width) * columnIndex + spacing, 60.0f + (rowIndex * (height + spacing)), width, height)];
         cornerView.backgroundColor = UIColor.grayColor;
         cornerView.corner_radius = CGSizeMake(20.0f, 50.0f);
         cornerView.corner_corners = UIRectCornerTopLeft | UIRectCornerBottomRight;
@@ -62,7 +63,7 @@
 }
 
 - (void)setStartEndPoint {
-    switch (4) {
+    switch (3) {
         case 1: {// 左三角
             self.gradientView.gradient_layer.startPoint = CGPointMake(0.0f, 1.0f);
             self.gradientView.gradient_layer.endPoint = CGPointMake(1.0f, 0.0f);
@@ -88,21 +89,26 @@
 
 #pragma mark - Animation
 
+#define LOOP
+
 - (void)onAnimateDisplayLink:(CADisplayLink *)displayLink {
-//    [CATransaction begin];
-//    [CATransaction setDisableActions:YES];
-//    [self setStartEndPoint];
-//    [CATransaction commit];
     CGFloat angle = 2 * M_PI / 180.0f;
-//    if (angle >= M_PI_2) {
-//        [displayLink invalidate];
-//    }
+#ifdef LOOP
     if (angle >= 2 * M_PI) {
         angle = 0.0f;
-//        [displayLink invalidate];
     }
+#else
+    [self setStartEndPoint];
+    angle += self.gradientView.gradient_angle;
+#endif // #ifdef LOOP
     
     self.gradientView.gradient_angle = angle;
+#ifndef LOOP
+    // 一轮停止
+    if (angle >= M_PI_2) {
+        [displayLink invalidate];
+    }
+#endif // #ifndef LOOP
 }
 
 @end
