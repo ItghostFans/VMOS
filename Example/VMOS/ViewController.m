@@ -18,6 +18,8 @@
 
 @property (weak, nonatomic) CADisplayLink *animateDisplayLink;
 
+@property (weak, nonatomic) UIControl *control;
+
 @end
 
 @implementation ViewController
@@ -25,7 +27,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     CGFloat width = 60.0f;
-    CGFloat height = 120.0f;
+    CGFloat height = 60.0f;
     CGFloat spacing = 5.0f;
     NSInteger column = 4;
     UIView *cornerView;
@@ -35,7 +37,8 @@
         cornerView = [[UIView alloc] initWithFrame:CGRectMake((spacing + width) * columnIndex + spacing, 60.0f + (rowIndex * (height + spacing)), width, height)];
         cornerView.backgroundColor = UIColor.grayColor;
         cornerView.corner_radius = CGSizeMake(20.0f, 50.0f);
-        cornerView.corner_corners = UIRectCornerTopLeft | UIRectCornerBottomRight;
+//        cornerView.corner_corners = UIRectCornerTopLeft | UIRectCornerBottomRight;
+        cornerView.corner_corners = UIRectCornerAllCorners;
         [self.view addSubview:cornerView];
         UIView *gradientView = cornerView;
     //    UIView *gradientView = [[UIView alloc] initWithFrame:CGRectMake(10.0f, 160.0f, 100.0f, 100.0f)];
@@ -43,9 +46,9 @@
 //                                                  @0.1f,
                                                   @1.0f];
         gradientView.gradient_layer.colors = @[
+            (__bridge id)UIColor.greenColor.CGColor,
             (__bridge id)UIColor.redColor.CGColor,
 //            (__bridge id)UIColor.greenColor.CGColor,
-            (__bridge id)UIColor.greenColor.CGColor,
         ];
         _gradientView = gradientView;
         [self setStartEndPoint];
@@ -60,6 +63,12 @@
         animateDisplayLink.preferredFramesPerSecond = 30.0f;
     }
     [animateDisplayLink addToRunLoop:NSRunLoop.mainRunLoop forMode:NSRunLoopCommonModes];
+    
+    UIControl *control = [[UIControl alloc] initWithFrame:CGRectMake(100.0f, 100.0f, 50.0f, 50.0f)];
+    _control = control;
+    _control.backgroundColor = UIColor.redColor;
+    [self.view addSubview:control];
+    [control addTarget:self action:@selector(onClick:) forControlEvents:(UIControlEventTouchUpInside)];
 }
 
 - (void)setStartEndPoint {
@@ -109,6 +118,12 @@
         [displayLink invalidate];
     }
 #endif // #ifndef LOOP
+}
+
+#pragma mark - Actions
+
+- (void)onClick:(UIControl *)control {
+    
 }
 
 @end

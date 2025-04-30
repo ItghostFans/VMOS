@@ -38,10 +38,16 @@ TODO: Add long description of the pod here.
     subspec.private_header_files = 'VMOS/Private/Foundation/**/*.h'
   end
   
+  s.subspec 'QuartzCore' do |subspec|
+    subspec.source_files = 'VMOS/Classes/QuartzCore/**/*', 'VMOS/Private/QuartzCore/**/*.h'
+    subspec.private_header_files = 'VMOS/Private/QuartzCore/**/*.h'
+    subspec.dependency 'VMOS/Foundation'
+  end
+  
   s.subspec 'UIKit' do |subspec|
     subspec.source_files = 'VMOS/Classes/UIKit/**/*', 'VMOS/Private/UIKit/**/*.h'
     subspec.private_header_files = 'VMOS/Private/UIKit/**/*.h'
-    subspec.dependency 'VMOS/Foundation'
+    subspec.dependency 'VMOS/QuartzCore'
   end
   
   # s.resource_bundles = {
@@ -49,6 +55,6 @@ TODO: Add long description of the pod here.
   # }
 
   # s.public_header_files = 'Pod/Classes/**/*.h'
-  s.frameworks = 'UIKit', 'Foundation'
+  s.frameworks = 'UIKit', 'Foundation', 'QuartzCore'
   # s.dependency 'AFNetworking', '~> 2.3'
 end
