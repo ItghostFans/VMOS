@@ -7,6 +7,8 @@
 
 #import "VMOSResizableLayer.h"
 
+#import <VMOS/VMKit.h>
+
 @interface VMOSResizableLayer ()
 @property (weak, nonatomic, nullable) CAShapeLayer *topLeftLayer;
 @property (weak, nonatomic, nullable) CAShapeLayer *topLayer;
@@ -30,25 +32,25 @@
     return self;
 }
 
-- (void)setResizeInsets:(UIEdgeInsets)resizeInsets {
+- (void)setResizeInsets:(VMEdgeInsets)resizeInsets {
     _resizeInsets = resizeInsets;
     
 #ifdef DEBUG
-    self.topLeftLayer.backgroundColor = UIColor.redColor.CGColor;        // 1.0, 0.0, 0.0 RGB
-    self.topLayer.backgroundColor = UIColor.greenColor.CGColor;      // 0.0, 1.0, 0.0 RGB
-    self.topRightLayer.backgroundColor = UIColor.blueColor.CGColor;       // 0.0, 0.0, 1.0 RGB
-    self.leftLayer.backgroundColor = UIColor.cyanColor.CGColor;       // 0.0, 1.0, 1.0 RGB
-    self.midLayer.backgroundColor = UIColor.yellowColor.CGColor;     // 1.0, 1.0, 0.0 RGB
-    self.rightLayer.backgroundColor = UIColor.magentaColor.CGColor;    // 1.0, 0.0, 1.0 RGB
-    self.bottomLeftLayer.backgroundColor = UIColor.orangeColor.CGColor;     // 1.0, 0.5, 0.0 RGB
-    self.bottomLayer.backgroundColor = UIColor.purpleColor.CGColor;     // 0.5, 0.0, 0.5 RGB
-    self.bottomRightLayer.backgroundColor = UIColor.brownColor.CGColor;      // 0.6, 0.4, 0.2 RGB
+    self.topLeftLayer.backgroundColor = VMColor.redColor.CGColor;        // 1.0, 0.0, 0.0 RGB
+    self.topLayer.backgroundColor = VMColor.greenColor.CGColor;      // 0.0, 1.0, 0.0 RGB
+    self.topRightLayer.backgroundColor = VMColor.blueColor.CGColor;       // 0.0, 0.0, 1.0 RGB
+    self.leftLayer.backgroundColor = VMColor.cyanColor.CGColor;       // 0.0, 1.0, 1.0 RGB
+    self.midLayer.backgroundColor = VMColor.yellowColor.CGColor;     // 1.0, 1.0, 0.0 RGB
+    self.rightLayer.backgroundColor = VMColor.magentaColor.CGColor;    // 1.0, 0.0, 1.0 RGB
+    self.bottomLeftLayer.backgroundColor = VMColor.orangeColor.CGColor;     // 1.0, 0.5, 0.0 RGB
+    self.bottomLayer.backgroundColor = VMColor.purpleColor.CGColor;     // 0.5, 0.0, 0.5 RGB
+    self.bottomRightLayer.backgroundColor = VMColor.brownColor.CGColor;      // 0.6, 0.4, 0.2 RGB
 #endif // #ifdef DEBUG
     
     [self updateCorners];
 }
 
-- (void)addCorner:(UIRectCorner)corner controlPoint:(CGPoint)controlPoint {
+- (void)addCorner:(VMRectCorner)corner controlPoint:(CGPoint)controlPoint {
     _cornerControlPoints[@(corner)] = [NSValue valueWithCGPoint:controlPoint];
 }
 
@@ -85,17 +87,17 @@
 
 - (void)updateCorners {
     [_cornerControlPoints enumerateKeysAndObjectsUsingBlock:^(__kindof NSNumber * _Nonnull key, __kindof NSValue * _Nonnull obj, BOOL * _Nonnull stop) {
-        UIRectCorner corner = [key unsignedIntegerValue];
+        VMRectCorner corner = [key unsignedIntegerValue];
         CGPoint controlPoint = obj.CGPointValue;
         switch (corner) {
-            case UIRectCornerTopLeft: {
+            case VMRectCornerTopLeft: {
                 UIBezierPath *path = UIBezierPath.new;
                 [path moveToPoint:CGPointMake(0.0f, _resizeInsets.top)];
                 [path addQuadCurveToPoint:CGPointMake(_resizeInsets.left, 0.0f) controlPoint:controlPoint];
                 path.lineWidth = 1.0f;
                 self.topLeftLayer.path = path.CGPath;
-                self.topLeftLayer.strokeColor = UIColor.whiteColor.CGColor;
-                self.topLeftLayer.fillColor = UIColor.clearColor.CGColor;
+                self.topLeftLayer.strokeColor = VMColor.whiteColor.CGColor;
+                self.topLeftLayer.fillColor = VMColor.clearColor.CGColor;
                 break;
             }
             default:

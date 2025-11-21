@@ -30,7 +30,7 @@
 
 - (instancetype)init {
     if (self = [super init]) {
-        _colors = [NSMutableArray arrayWithObjects:UIColor.redColor, UIColor.blueColor, UIColor.yellowColor, UIColor.greenColor, nil];
+        _colors = [NSMutableArray arrayWithObjects:VMColor.redColor, VMColor.blueColor, VMColor.yellowColor, VMColor.greenColor, nil];
     }
     return self;
 }

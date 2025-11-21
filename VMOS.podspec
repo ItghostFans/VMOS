@@ -27,10 +27,8 @@ TODO: Add long description of the pod here.
   s.author           = { 'ItghostFans' => 'ItghostFans@gmail.com' }
   s.source           = { :git => 'https://github.com/ItghostFans/VMOS.git', :tag => s.version.to_s }
   # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
-
-  s.ios.deployment_target = '13.0'
-
-  s.default_subspec = 'UIKit'
+  
+  s.default_subspec = 'iOS'
   s.preserve_paths = '**'
   
   s.subspec 'Foundation' do |subspec|
@@ -44,10 +42,27 @@ TODO: Add long description of the pod here.
     subspec.dependency 'VMOS/Foundation'
   end
   
-  s.subspec 'UIKit' do |subspec|
-    subspec.source_files = 'VMOS/Classes/UIKit/**/*', 'VMOS/Private/UIKit/**/*.h'
-    subspec.private_header_files = 'VMOS/Private/UIKit/**/*.h'
+  s.subspec 'Kit' do |subspec|
+    subspec.source_files = 'VMOS/Classes/Kit/**/*', 'VMOS/Private/Kit/**/*.h'
+    subspec.private_header_files = 'VMOS/Private/Kit/**/*.h'
     subspec.dependency 'VMOS/QuartzCore'
+    subspec.dependency 'VMOS/Foundation'
+  end
+  
+  # iOS
+  
+  s.ios.deployment_target = '13.0'
+  s.subspec 'iOS' do |subspec|
+    subspec.dependency 'VMOS/Kit'
+    subspec.frameworks = 'UIKit'
+  end
+  
+  # macOS
+  
+  s.osx.deployment_target = '12.0'
+  s.subspec 'macOS' do |subspec|
+    subspec.dependency 'VMOS/Kit'
+    subspec.frameworks = 'AppKit'
   end
   
   # s.resource_bundles = {
@@ -55,6 +70,6 @@ TODO: Add long description of the pod here.
   # }
 
   # s.public_header_files = 'Pod/Classes/**/*.h'
-  s.frameworks = 'UIKit', 'Foundation', 'QuartzCore'
+  s.frameworks = 'Foundation', 'QuartzCore'
   # s.dependency 'AFNetworking', '~> 2.3'
 end

@@ -1,25 +1,29 @@
 //
-//  UIView+Gradient.m
+//  VMView+Gradient.m
 //  VMOS
 //
 //  Created by ItghostFan on 2024/12/3.
 //
 
-#import "UIView+Gradient.h"
+#import "VMView+Gradient.h"
 #import "NSObject+Runtime.h"
 #import <objc/runtime.h>
 
-@interface UIView ()
+@interface VMView ()
 @property (assign, nonatomic) CGPoint gradient_startPoint;
 @property (assign, nonatomic) CGPoint gradient_endPoint;
 @end
 
-@implementation UIView (Gradient)
+@implementation VMView (Gradient)
 
 + (void)load {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
+#if TARGET_OS_IPHONE
         [self runtime_swizzleSel:@selector(layoutSubviews) newSel:@selector(gradient_layoutSubviews)];
+#elif TARGET_OS_MAC
+        [self runtime_swizzleSel:@selector(layout) newSel:@selector(gradient_layoutSubviews)];
+#endif // #if TARGET_OS_IPHONE
     });
 }
 
@@ -48,7 +52,12 @@
     }
     const void * sel = @selector(gradient_angle);
     objc_setAssociatedObject(self, sel, @(gradient_angle), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+#if TARGET_OS_IPHONE
     [self setNeedsLayout];
+#elif TARGET_OS_MAC
+    [self setNeedsLayout:YES];
+#endif // #if TARGET_OS_IPHONE
+    
 }
 
 - (CGFloat)gradient_angle {
@@ -63,7 +72,12 @@
 
 - (void)setGradient_startPoint:(CGPoint)gradient_startPoint {
     const void * sel = @selector(gradient_startPoint);
-    objc_setAssociatedObject(self, sel, [NSValue valueWithCGPoint:gradient_startPoint], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+#if TARGET_OS_IPHONE
+    NSValue *startPoint = [NSValue valueWithCGPoint:gradient_startPoint];
+#elif TARGET_OS_MAC
+    NSValue *startPoint = [NSValue valueWithPoint:gradient_startPoint];
+#endif // #if TARGET_OS_IPHONE
+    objc_setAssociatedObject(self, sel, startPoint, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
 - (CGPoint)gradient_endPoint {
@@ -73,7 +87,12 @@
 
 - (void)setGradient_endPoint:(CGPoint)gradient_endPoint {
     const void * sel = @selector(gradient_endPoint);
-    objc_setAssociatedObject(self, sel, [NSValue valueWithCGPoint:gradient_endPoint], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+#if TARGET_OS_IPHONE
+    NSValue *endPoint = [NSValue valueWithCGPoint:gradient_endPoint];
+#elif TARGET_OS_MAC
+    NSValue *endPoint = [NSValue valueWithPoint:gradient_endPoint];
+#endif // #if TARGET_OS_IPHONE
+    objc_setAssociatedObject(self, sel, endPoint, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
 - (void)gradient_layoutSubviews {

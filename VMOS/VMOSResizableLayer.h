@@ -7,13 +7,15 @@
 
 #import <QuartzCore/QuartzCore.h>
 
+#import <VMOS/VMGeometry.h>
+
 NS_ASSUME_NONNULL_BEGIN
 
 @interface VMOSResizableLayer : CALayer
 
-@property (assign, nonatomic) UIEdgeInsets resizeInsets;
+@property (assign, nonatomic) VMEdgeInsets resizeInsets;
 
-- (void)addCorner:(UIRectCorner)corner controlPoint:(CGPoint)controlPoint;
+- (void)addCorner:(VMRectCorner)corner controlPoint:(CGPoint)controlPoint;
 
 @end
 

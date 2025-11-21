@@ -1,15 +1,15 @@
 //
-//  UIView+Gradient.h
+//  VMView+Gradient.h
 //  VMOS
 //
 //  Created by ItghostFan on 2024/12/3.
 //
 
-#import <UIKit/UIKit.h>
+#import <VMOS/VMView.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface UIView (Gradient)
+@interface VMView (Gradient)
 
 @property (weak, nonatomic, readonly) CAGradientLayer *gradient_layer;
 /// 正常是8个点做渐变。

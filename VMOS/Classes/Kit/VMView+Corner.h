@@ -1,19 +1,19 @@
 //
-//  UIView+Corner.h
+//  VMView+Corner.h
 //  VMOS
 //
 //  Created by ItghostFan on 2024/12/3.
 //
 
-#import <UIKit/UIKit.h>
+#import <VMOS/VMView.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface UIView (Corner)
+@interface VMView (Corner)
 
 @property (weak, nonatomic, readonly) CAShapeLayer *corner_layer;
 
-@property (assign, nonatomic) UIRectCorner corner_corners;
+@property (assign, nonatomic) VMRectCorner corner_corners;
 @property (assign, nonatomic) CGSize corner_radius;
 
 @end

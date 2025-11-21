@@ -1,20 +1,24 @@
 //
-//  UIView+Corner.m
+//  VMView+Corner.m
 //  VMOS
 //
 //  Created by ItghostFan on 2024/12/3.
 //
 
-#import "UIView+Corner.h"
+#import "VMView+Corner.h"
 #import "NSObject+Runtime.h"
 #import <objc/runtime.h>
 
-@implementation UIView (Corner)
+@implementation VMView (Corner)
 
 + (void)load {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
+#if TARGET_OS_IPHONE
         [self runtime_swizzleSel:@selector(layoutSubviews) newSel:@selector(corner_layoutSubviews)];
+#elif TARGET_OS_MAC
+        [self runtime_swizzleSel:@selector(layout) newSel:@selector(corner_layoutSubviews)];
+#endif // #if TARGET_OS_IPHONE
     });
 }
 
@@ -29,12 +33,12 @@
     return shapeLayer;
 }
 
-- (UIRectCorner)corner_corners {
+- (VMRectCorner)corner_corners {
     const void * sel = @selector(corner_corners);
     return [objc_getAssociatedObject(self, sel) unsignedIntegerValue];
 }
 
-- (void)setCorner_corners:(UIRectCorner)corner_corners {
+- (void)setCorner_corners:(VMRectCorner)corner_corners {
     const void * sel = @selector(corner_corners);
     [self corner_layer];
     objc_setAssociatedObject(self, sel, @(corner_corners), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
@@ -42,13 +46,26 @@
 
 - (CGSize)corner_radius {
     const void * sel = @selector(corner_radius);
-    return [objc_getAssociatedObject(self, sel) CGSizeValue];
+    
+#if TARGET_OS_IPHONE
+    CGSize corner_radius = [objc_getAssociatedObject(self, sel) CGSizeValue];
+#elif TARGET_OS_MAC
+    CGSize corner_radius = [objc_getAssociatedObject(self, sel) sizeValue];
+#endif // #if TARGET_OS_IPHONE
+    return corner_radius;
 }
 
 - (void)setCorner_radius:(CGSize)corner_radius {
     const void * sel = @selector(corner_radius);
     [self corner_layer];
-    objc_setAssociatedObject(self, sel, [NSValue valueWithCGSize:corner_radius], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    
+#if TARGET_OS_IPHONE
+    NSValue *radius = [NSValue valueWithCGSize:corner_radius];
+#elif TARGET_OS_MAC
+    NSValue *radius = [NSValue valueWithSize:corner_radius];
+#endif // #if TARGET_OS_IPHONE
+    
+    objc_setAssociatedObject(self, sel, radius, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
 - (void)corner_layoutSubviews {
@@ -60,7 +77,9 @@
             return; // 已经设置了这个了，不必要再处理。
         }
         corner_layer.frame = self.bounds;
-        corner_layer.path = [UIBezierPath bezierPathWithRoundedRect:self.bounds byRoundingCorners:self.corner_corners cornerRadii:self.corner_radius].CGPath;
+        // TODO: 这里后面要补回来
+//        VMBezierPath *bezierPath = VMBezierPath.bezierPath;
+//        corner_layer.path = bezierPath.CGPath;
     }
 }
 
