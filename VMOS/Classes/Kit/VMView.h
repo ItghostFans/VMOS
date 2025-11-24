@@ -19,6 +19,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 // iOS
 @property (strong, nonatomic) VMColor *backgroundColor;
+@property (assign, nonatomic) BOOL userInteractionEnabled;
 
 - (void)setNeedsDisplay;
 - (void)setNeedsLayout;

@@ -16,6 +16,7 @@
 #if TARGET_OS_IPHONE
 #elif TARGET_OS_MAC
         self.wantsLayer = YES;
+        self.userInteractionEnabled = YES;
 #endif // #if TARGET_OS_IPHONE
     }
     return self;
@@ -46,6 +47,20 @@
 - (void)setBackgroundColor:(VMColor *)backgroundColor {
     _backgroundColor = backgroundColor;
     self.layer.backgroundColor = backgroundColor.CGColor;
+}
+
+- (NSView *)hitTest:(NSPoint)point {
+    if (!self.userInteractionEnabled) {
+        return nil;
+    }
+    return [super hitTest:point];
+}
+
+- (void)mouseDown:(NSEvent *)event {
+    if (!self.userInteractionEnabled) {
+        return;
+    }
+    [super mouseDown:event];
 }
 
 #endif // #if TARGET_OS_IPHONE

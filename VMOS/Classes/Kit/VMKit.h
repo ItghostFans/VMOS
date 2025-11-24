@@ -18,10 +18,12 @@
 typedef UIColor VMColor;
 typedef UIBezierPath VMBezierPath;
 typedef UIImage VMImage;
+typedef UIFont VMFont;
 #elif TARGET_OS_MAC
 typedef NSColor VMColor;
 typedef NSBezierPath VMBezierPath;
 typedef NSImage VMImage;
+typedef NSFont VMFont;
 #endif // #if TARGET_OS_IPHONE
 
 #import <VMOS/VMView.h>
