@@ -16,10 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 API_AVAILABLE(macos(12.0))
 
-@interface VMButtonCell : NSButtonCell
-
-@property (weak, nonatomic, readonly) NSImageView *imageView;
-@property (weak, nonatomic, readonly) VMLabel *titleLabel;
+@interface VMButtonCell : NSCell
 
 @end
 

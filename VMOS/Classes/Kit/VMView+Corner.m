@@ -15,9 +15,9 @@
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
 #if TARGET_OS_IPHONE
-        [self runtime_swizzleSel:@selector(layoutSubviews) newSel:@selector(corner_layoutSubviews)];
+        [self runtime_swizzleSel:@selector(layoutSubviews) newSel:@selector(corner_layoutSubviews) cls:self];
 #elif TARGET_OS_MAC
-        [self runtime_swizzleSel:@selector(layout) newSel:@selector(corner_layoutSubviews)];
+        [self runtime_swizzleSel:@selector(layout) newSel:@selector(corner_layoutSubviews) cls:self];
 #endif // #if TARGET_OS_IPHONE
     });
 }

@@ -9,6 +9,12 @@
 
 #import <VMOS/VMGeometry.h>
 #import "VMOS/VMKit.h"
+#if TARGET_OS_IPHONE
+#import <VMOS/UIView+Cross.h>
+#elif TARGET_OS_MAC
+#import <VMOS/NSView+UIKit.h>
+#import <VMOS/NSView+Cross.h>
+#endif // #if TARGET_OS_IPHONE
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -16,19 +22,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface VMView : UIView
 #elif TARGET_OS_MAC
 @interface VMView : NSView
-
-// iOS
-@property (strong, nonatomic) VMColor *backgroundColor;
-@property (assign, nonatomic) BOOL userInteractionEnabled;
-
-- (void)setNeedsDisplay;
-- (void)setNeedsLayout;
-- (void)layoutSubviews;
-
 #endif // #if TARGET_OS_IPHONE
-
-- (VMImage *)snapshot;
-- (CGContextRef)currentContext;
 
 @end
 

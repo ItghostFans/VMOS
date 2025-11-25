@@ -11,13 +11,13 @@
 
 @implementation NSObject (Runtime)
 
-+ (void)runtime_swizzleSel:(SEL)oldSel newSel:(SEL)newSel {
-    Method oldMethod = class_getInstanceMethod(self, oldSel);
-    Method newMethod = class_getInstanceMethod(self, newSel);
++ (void)runtime_swizzleSel:(SEL)oldSel newSel:(SEL)newSel cls:(Class)cls {
+    Method oldMethod = class_getInstanceMethod(cls, oldSel);
+    Method newMethod = class_getInstanceMethod(cls, newSel);
     IMP oldMethodImp = method_getImplementation(oldMethod);
     IMP newMethodImp = method_getImplementation(newMethod);
-    if (class_addMethod(self, oldSel, newMethodImp, method_getTypeEncoding(newMethod))) {
-        class_replaceMethod(self, newSel, oldMethodImp, method_getTypeEncoding(oldMethod));
+    if (class_addMethod(cls, oldSel, newMethodImp, method_getTypeEncoding(newMethod))) {
+        class_replaceMethod(cls, oldSel, oldMethodImp, method_getTypeEncoding(oldMethod));
     } else {
         method_exchangeImplementations(oldMethod, newMethod);
     }

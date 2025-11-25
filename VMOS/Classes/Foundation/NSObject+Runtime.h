@@ -11,7 +11,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface NSObject (Runtime)
 
-+ (void)runtime_swizzleSel:(SEL)oldSel newSel:(SEL)newSel;
++ (void)runtime_swizzleSel:(SEL)oldSel newSel:(SEL)newSel cls:(Class)cls;
 
 @end
 
