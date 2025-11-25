@@ -99,7 +99,7 @@
                 contentFrame.size.width = contentSize.width;
             }
             
-            contentFrame.origin.y = (contentSize.height - contentHeight) / 2 + _contentEdgeInsets.left;
+            contentFrame.origin.y = (contentSize.height - contentHeight) / 2 + _contentEdgeInsets.top;
             contentFrame.size.height = contentHeight;
             
             titleFrame = (CGRect){
@@ -119,6 +119,43 @@
         }
         case VMImagePositionImageLeading:
         case VMImagePositionImageTrailing: {
+            CGSize titleSize = [self.titleLabel sizeThatFits:CGSizeZero];
+            CGSize imageSize = [self imageOfState:(VMControlState)self.state].size;
+            CGSize contentSize = (CGSize){
+                .width = CGRectGetWidth(self.bounds) - _contentEdgeInsets.left - _contentEdgeInsets.right,
+                .height = CGRectGetHeight(self.bounds) - _contentEdgeInsets.top - _contentEdgeInsets.bottom
+            };
+            CGFloat contentWidth = titleSize.width + _itemSpacing + imageSize.width;
+            CGFloat contentHeight = MAX(titleSize.height, imageSize.height);
+            CGRect contentFrame = CGRectZero;
+            
+            CGRect titleFrame = CGRectZero;
+            CGRect imageFrame = CGRectZero;
+            
+            if (contentWidth < contentSize.width) {
+                contentFrame.origin.x = (contentSize.width - contentWidth) / 2;
+                contentFrame.size.width = contentWidth;
+            } else {
+                contentFrame.origin.x = _contentEdgeInsets.left;
+                contentFrame.size.width = contentSize.width;
+            }
+            
+            contentFrame.origin.y = (contentSize.height - contentHeight) / 2 + _contentEdgeInsets.top;
+            contentFrame.size.height = contentHeight;
+            
+            titleFrame = (CGRect){
+                .origin = {imagePosition == VMImagePositionImageTrailing ? contentFrame.origin.x : CGRectGetMaxX(contentFrame) - titleSize.width, (contentSize.height - titleSize.height) / 2 + _contentEdgeInsets.top},
+                .size = {titleSize.width, titleSize.height}
+            };
+            
+            imageFrame = (CGRect){
+                .origin = {imagePosition == VMImagePositionImageLeading ? contentFrame.origin.x : CGRectGetMaxX(contentFrame) - imageSize.width, (contentSize.height - imageSize.height) / 2 + _contentEdgeInsets.top},
+                .size = {imageSize.width, imageSize.height}
+            };
+            
+            self.titleLabel.frame = titleFrame;
+            self.imageView.frame = imageFrame;
+            
             break;
         }
         default: {
