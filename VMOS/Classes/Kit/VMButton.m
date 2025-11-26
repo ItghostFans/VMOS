@@ -373,17 +373,26 @@
 
 #pragma mark - Events
 
-- (void)mouseDown:(NSEvent *)event {
+#if TARGET_OS_IPHONE
+- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
+#elif TARGET_OS_MAC
+- (void)mouseDown:(NSEvent *)event
+#endif // #if TARGET_OS_IPHONE
+{
     NSMutableArray<__kindof NSInvocation *> *actions = [self actionsOfEvent:(VMControlEventTouchDown)];
     [actions enumerateObjectsUsingBlock:^(__kindof NSInvocation * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         [obj invokeWithTarget:self];
     }];
 }
-
-- (void)mouseUp:(NSEvent *)event {
+#if TARGET_OS_IPHONE
+- (void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
+#elif TARGET_OS_MAC
+- (void)mouseUp:(NSEvent *)event
+#endif // #if TARGET_OS_IPHONE
+{
     CGPoint point = CGPointZero;
 #if TARGET_OS_IPHONE
-    for (NSTouch *touch in [event touchesForView:self]) {
+    for (UITouch *touch in [event touchesForView:self]) {
         point = [touch locationInView:self];
         if (CGRectContainsPoint(self.bounds, point)) {
             break;

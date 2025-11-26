@@ -16,9 +16,8 @@ NS_ASSUME_NONNULL_BEGIN
 @interface VMControl : UIControl
 #elif TARGET_OS_MAC
 @interface VMControl : NSControl
+#endif // #if TARGET_OS_IPHONE
 
 @end
 
 NS_ASSUME_NONNULL_END
-
-#endif // #if TARGET_OS_IPHONE

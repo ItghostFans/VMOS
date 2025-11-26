@@ -8,7 +8,6 @@
 #if TARGET_OS_IPHONE
 #elif TARGET_OS_MAC
 #import <AppKit/AppKit.h>
-#endif // #if TARGET_OS_IPHONE
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -21,3 +20,5 @@ API_AVAILABLE(macos(12.0))
 @end
 
 NS_ASSUME_NONNULL_END
+
+#endif // #if TARGET_OS_IPHONE

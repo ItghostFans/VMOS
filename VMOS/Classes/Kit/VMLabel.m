@@ -254,7 +254,7 @@
     [_layoutManager addTextContainer:_textContainer];
     
 #if TARGET_OS_IPHONE
-    self.font = NSTextFieldLabel.appearance.font;
+    self.font = UILabel.appearance.font;
     self.textColor = UILabel.appearance.textColor;
     self.numberOfLines = UILabel.appearance.numberOfLines;
     self.lineBreakMode  = UILabel.appearance.lineBreakMode;

@@ -20,12 +20,14 @@ typedef UIBezierPath VMBezierPath;
 typedef UIImage VMImage;
 typedef UIFont VMFont;
 typedef UIImageView VMImageView;
+#define VMEdgeInsetsMake UIEdgeInsetsMake
 #elif TARGET_OS_MAC
 typedef NSColor VMColor;
 typedef NSBezierPath VMBezierPath;
 typedef NSImage VMImage;
 typedef NSFont VMFont;
 typedef NSImageView VMImageView;
+#define VMEdgeInsetsMake NSEdgeInsetsMake
 #endif // #if TARGET_OS_IPHONE
 
 #import <VMOS/VMControlTypes.h>

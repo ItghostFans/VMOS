@@ -10,6 +10,9 @@
 #import <VMOS/NSObject+Runtime.h>
 
 #import <objc/runtime.h>
+#if TARGET_OS_IPHONE
+
+#elif TARGET_OS_MAC
 
 @implementation NSView (UIKit)
 
@@ -86,3 +89,5 @@
 }
 
 @end
+
+#endif // #if TARGET_OS_IPHONE

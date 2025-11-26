@@ -9,6 +9,10 @@
 
 #import <VMOS/VMLabel.h>
 
+#if TARGET_OS_IPHONE
+
+#elif TARGET_OS_MAC
+
 @interface VMButtonCell ()
 //@property (weak, nonatomic) NSImageView *imageView;
 //@property (weak, nonatomic) VMLabel *titleLabel;
@@ -92,3 +96,5 @@
 //}
 
 @end
+
+#endif // #if TARGET_OS_IPHONE
