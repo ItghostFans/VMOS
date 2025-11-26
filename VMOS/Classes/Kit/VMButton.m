@@ -66,6 +66,14 @@
 
 - (void)layoutSubviews {
     [super layoutSubviews];
+    
+    CGSize titleSize = [self.titleLabel sizeThatFits:CGSizeZero];
+    CGSize imageSize = [self imageOfState:(VMControlState)self.state].size;
+    CGSize contentSize = (CGSize){
+        .width = CGRectGetWidth(self.bounds) - _contentEdgeInsets.left - _contentEdgeInsets.right,
+        .height = CGRectGetHeight(self.bounds) - _contentEdgeInsets.top - _contentEdgeInsets.bottom
+    };
+    
     VMImagePosition imagePosition = [self realyImagePosition];
     switch (imagePosition) {
         case VMImagePositionNoImage: {
@@ -78,12 +86,6 @@
         }
         case VMImagePositionImageAbove:
         case VMImagePositionImageBelow: {
-            CGSize titleSize = [self.titleLabel sizeThatFits:CGSizeZero];
-            CGSize imageSize = [self imageOfState:(VMControlState)self.state].size;
-            CGSize contentSize = (CGSize){
-                .width = CGRectGetWidth(self.bounds) - _contentEdgeInsets.left - _contentEdgeInsets.right,
-                .height = CGRectGetHeight(self.bounds) - _contentEdgeInsets.top - _contentEdgeInsets.bottom
-            };
             CGFloat contentWidth = MAX(titleSize.width, imageSize.width);
             CGFloat contentHeight = titleSize.height + _itemSpacing + imageSize.height;
             CGRect contentFrame = CGRectZero;
@@ -104,12 +106,12 @@
             
             titleFrame = (CGRect){
                 .origin = {(contentSize.width - titleSize.width) / 2 + _contentEdgeInsets.left, imagePosition == VMImagePositionImageBelow ? contentFrame.origin.y : CGRectGetMaxY(contentFrame) - titleSize.height},
-                .size = {contentFrame.size.width, titleSize.height}
+                .size = {MIN(contentSize.width, titleSize.width), MIN(contentSize.height, titleSize.height)}
             };
             
             imageFrame = (CGRect){
                 .origin = {(contentSize.width - imageSize.width) / 2 + _contentEdgeInsets.left, imagePosition == VMImagePositionImageAbove ? contentFrame.origin.y : CGRectGetMaxY(contentFrame) - imageSize.height},
-                .size = {imageSize.width, imageSize.height}
+                .size = {MIN(contentSize.width, imageSize.width), MIN(contentSize.width, imageSize.height)}
             };
             
             self.titleLabel.frame = titleFrame;
@@ -119,12 +121,6 @@
         }
         case VMImagePositionImageLeading:
         case VMImagePositionImageTrailing: {
-            CGSize titleSize = [self.titleLabel sizeThatFits:CGSizeZero];
-            CGSize imageSize = [self imageOfState:(VMControlState)self.state].size;
-            CGSize contentSize = (CGSize){
-                .width = CGRectGetWidth(self.bounds) - _contentEdgeInsets.left - _contentEdgeInsets.right,
-                .height = CGRectGetHeight(self.bounds) - _contentEdgeInsets.top - _contentEdgeInsets.bottom
-            };
             CGFloat contentWidth = titleSize.width + _itemSpacing + imageSize.width;
             CGFloat contentHeight = MAX(titleSize.height, imageSize.height);
             CGRect contentFrame = CGRectZero;
