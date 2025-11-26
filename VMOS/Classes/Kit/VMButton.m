@@ -133,7 +133,7 @@
             CGRect imageFrame = CGRectZero;
             
             if (contentWidth < contentSize.width) {
-                contentFrame.origin.x = (contentSize.width - contentWidth) / 2;
+                contentFrame.origin.x = (contentSize.width - contentWidth) / 2 + _contentEdgeInsets.left;
                 contentFrame.size.width = contentWidth;
             } else {
                 contentFrame.origin.x = _contentEdgeInsets.left;
@@ -144,13 +144,13 @@
             contentFrame.size.height = contentHeight;
             
             titleFrame = (CGRect){
-                .origin = {imagePosition == VMImagePositionImageTrailing ? contentFrame.origin.x : CGRectGetMaxX(contentFrame) - titleSize.width, (contentSize.height - titleSize.height) / 2 + _contentEdgeInsets.top},
-                .size = {titleSize.width, titleSize.height}
+                .origin = {imagePosition == VMImagePositionImageTrailing ? contentFrame.origin.x : CGRectGetMaxX(contentFrame) - MIN(contentSize.width, titleSize.width), (contentSize.height - titleSize.height) / 2 + _contentEdgeInsets.top},
+                .size = {MIN(contentSize.width, titleSize.width), MIN(contentSize.height, titleSize.height)}
             };
             
             imageFrame = (CGRect){
-                .origin = {imagePosition == VMImagePositionImageLeading ? contentFrame.origin.x : CGRectGetMaxX(contentFrame) - imageSize.width, (contentSize.height - imageSize.height) / 2 + _contentEdgeInsets.top},
-                .size = {imageSize.width, imageSize.height}
+                .origin = {imagePosition == VMImagePositionImageLeading ? contentFrame.origin.x : CGRectGetMaxX(contentFrame) - MIN(contentSize.width, imageSize.width), (contentSize.height - imageSize.height) / 2 + _contentEdgeInsets.top},
+                .size = {MIN(contentSize.width, imageSize.width), MIN(contentSize.width, imageSize.height)}
             };
             
             self.titleLabel.frame = titleFrame;
