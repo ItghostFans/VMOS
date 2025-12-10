@@ -7,18 +7,18 @@
 
 #import <VMOS/VMKit.h>
 
-NS_ASSUME_NONNULL_BEGIN
-
-@interface NSCollectionViewLayoutAttributes (UIKit)
-
 #if TARGET_OS_IPHONE
 
 #elif TARGET_OS_MAC
 
-+ (instancetype)layoutAttributesForCellWithIndexPath:(NSIndexPath *)indexPath;
+NS_ASSUME_NONNULL_BEGIN
 
-#endif // #if TARGET_OS_IPHONE
+@interface NSCollectionViewLayoutAttributes (UIKit)
+
++ (instancetype)layoutAttributesForCellWithIndexPath:(NSIndexPath *)indexPath;
 
 @end
 
 NS_ASSUME_NONNULL_END
+
+#endif // #if TARGET_OS_IPHONE

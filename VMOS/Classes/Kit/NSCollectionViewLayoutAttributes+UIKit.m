@@ -7,16 +7,16 @@
 
 #import "NSCollectionViewLayoutAttributes+UIKit.h"
 
-@implementation NSCollectionViewLayoutAttributes (UIKit)
-
 #if TARGET_OS_IPHONE
 
 #elif TARGET_OS_MAC
+
+@implementation NSCollectionViewLayoutAttributes (UIKit)
 
 + (instancetype)layoutAttributesForCellWithIndexPath:(NSIndexPath *)indexPath {
     return [self layoutAttributesForItemWithIndexPath:indexPath];
 }
 
-#endif // #if TARGET_OS_IPHONE
-
 @end
+
+#endif // #if TARGET_OS_IPHONE
