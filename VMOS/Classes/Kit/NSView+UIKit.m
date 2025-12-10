@@ -68,6 +68,10 @@
 - (void)layoutSubviews {
 }
 
+- (void)layoutIfNeeded {
+    [self layoutSubtreeIfNeeded];
+}
+
 - (void)setBackgroundColor:(VMColor *)backgroundColor {
     self.layer.backgroundColor = backgroundColor.CGColor;
 }

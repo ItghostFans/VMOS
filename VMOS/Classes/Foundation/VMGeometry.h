@@ -25,6 +25,9 @@ typedef NS_OPTIONS(NSUInteger, VMRectCorner) {
 };
 
 typedef UIEdgeInsets VMEdgeInsets;
+#define VMEdgeInsetsMake UIEdgeInsetsMake
+#define VMEdgeInsetsZero UIEdgeInsetsZero
+#define VMEdgeInsetsEqualToEdgeInsets UIEdgeInsetsEqualToEdgeInsets
 #elif TARGET_OS_MAC
 
 typedef NS_OPTIONS(NSUInteger, VMRectCorner) {
@@ -36,6 +39,9 @@ typedef NS_OPTIONS(NSUInteger, VMRectCorner) {
 };
 
 typedef NSEdgeInsets VMEdgeInsets;
+#define VMEdgeInsetsMake NSEdgeInsetsMake
+#define VMEdgeInsetsZero NSEdgeInsetsZero
+#define VMEdgeInsetsEqualToEdgeInsets NSEdgeInsetsEqual
 #endif // #if TARGET_OS_IPHONE
 
 #endif /* VMGeometry_h */

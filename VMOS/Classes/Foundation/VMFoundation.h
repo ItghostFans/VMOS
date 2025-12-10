@@ -10,5 +10,6 @@
 
 #import <VMOS/VMGeometry.h>
 #import <VMOS/NSObject+Runtime.h>
+#import <VMOS/VMWeakifyProxy.h>
 
 #endif /* VMFoundation_h */

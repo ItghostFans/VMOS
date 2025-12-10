@@ -31,6 +31,11 @@ TODO: Add long description of the pod here.
   s.default_subspec = 'iOS'
   s.preserve_paths = '**'
   
+  s.subspec 'WeakProxy' do |subspec|
+    subspec.source_files = 'VMOS/Classes/Foundation/**/*', 'VMOS/Private/Foundation/**/*.h'
+    subspec.private_header_files = 'VMOS/Private/Foundation/**/*.h'
+  end
+  
   s.subspec 'Foundation' do |subspec|
     subspec.source_files = 'VMOS/Classes/Foundation/**/*', 'VMOS/Private/Foundation/**/*.h'
     subspec.private_header_files = 'VMOS/Private/Foundation/**/*.h'

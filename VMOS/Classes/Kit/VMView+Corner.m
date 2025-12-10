@@ -47,11 +47,7 @@
 - (CGSize)corner_radius {
     const void * sel = @selector(corner_radius);
     
-#if TARGET_OS_IPHONE
     CGSize corner_radius = [objc_getAssociatedObject(self, sel) CGSizeValue];
-#elif TARGET_OS_MAC
-    CGSize corner_radius = [objc_getAssociatedObject(self, sel) sizeValue];
-#endif // #if TARGET_OS_IPHONE
     return corner_radius;
 }
 
@@ -59,12 +55,7 @@
     const void * sel = @selector(corner_radius);
     [self corner_layer];
     
-#if TARGET_OS_IPHONE
     NSValue *radius = [NSValue valueWithCGSize:corner_radius];
-#elif TARGET_OS_MAC
-    NSValue *radius = [NSValue valueWithSize:corner_radius];
-#endif // #if TARGET_OS_IPHONE
-    
     objc_setAssociatedObject(self, sel, radius, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
