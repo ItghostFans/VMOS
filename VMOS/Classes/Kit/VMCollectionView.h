@@ -7,6 +7,8 @@
 
 #import <VMOS/VMKit.h>
 
+@class VMView;
+
 #if TARGET_OS_IPHONE
 
 typedef UICollectionViewUpdateItem VMCollectionViewUpdateItem;
@@ -71,6 +73,11 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)deselectItemAtIndexPath:(NSIndexPath *)indexPath animated:(BOOL)animated;
 
 #endif // #if TARGET_OS_IPHONE
+
+// 因为macOS和iOS的滚动视图是不一致的。
+@property (weak, nonatomic, readonly) VMView *scrollView;
+
+- (void)addToSuperview:(VMView *)superview;
 
 @end
 

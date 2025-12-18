@@ -7,6 +7,8 @@
 
 #import "VMTableView.h"
 
+#import <VMOS/NSBundle+Cross.h>
+
 @implementation VMTableView
 
 #if TARGET_OS_IPHONE
@@ -15,8 +17,17 @@
 
 - (instancetype)initWithFrame:(CGRect)frame style:(VMTableViewStyle)style {
     if (self = [super initWithFrame:frame]) {
+        NSTableColumn *column = [[NSTableColumn alloc] initWithIdentifier:@""];
+        [self addTableColumn:column];
+        self.allowsColumnResizing = YES;
+        self.style = NSTableViewStyleFullWidth;
     }
     return self;
+}
+
+- (void)layoutSubviews {
+    [super layoutSubviews];
+    self.tableColumns.firstObject.width = CGRectGetWidth(self.bounds);
 }
 
 - (NSTableHeaderView *)tableHeaderView {
@@ -28,6 +39,16 @@
 }
 
 - (void)registerClass:(nullable Class)cellClass forCellReuseIdentifier:(NSString *)identifier {
+    NSArray<__kindof NSBundle *> *allBundles = NSBundle.allBizBundles;
+    for (NSBundle *cellBundle in allBundles) {
+        @try {
+            NSNib *cellXib = [[NSNib alloc] initWithNibNamed:identifier bundle:cellBundle];
+            [self registerNib:cellXib forIdentifier:identifier];
+            return;
+        } @catch (NSException *exception) {
+        } @finally {
+        }
+    }
 }
 
 - (void)registerClass:(nullable Class)aClass forHeaderFooterViewReuseIdentifier:(NSString *)identifier {
@@ -82,5 +103,19 @@
 }
 
 #endif // #if TARGET_OS_IPHONE
+
+- (void)addToSuperview:(VMView *)superview {
+#if TARGET_OS_IPHONE
+    [superview addSubview:self];
+    _scrollView = scrollView;
+#elif TARGET_OS_MAC
+    VMScrollView *scrollView = VMScrollView.new;
+    [superview addSubview:scrollView];
+    _scrollView = (VMView *)scrollView;
+    scrollView.documentView = self;
+//    [superview addSubview:self];
+//    _scrollView = (VMView *)self;
+#endif // #if TARGET_OS_IPHONE
+}
 
 @end

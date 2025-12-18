@@ -49,5 +49,6 @@ typedef NSScreen VMScreen;
 #import <VMOS/VMTableView.h>
 #import <VMOS/VMTableViewCell.h>
 #import <VMOS/VMTableViewHeaderFooterView.h>
+#import <VMOS/VMScrollView.h>
 
 //#endif /* VMKit_h */

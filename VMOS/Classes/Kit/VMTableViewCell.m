@@ -9,11 +9,6 @@
 
 @implementation VMTableViewCell
 
-- (void)awakeFromNib {
-    [super awakeFromNib];
-    // Initialization code
-}
-
 #if TARGET_OS_IPHONE
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
@@ -23,6 +18,22 @@
 }
 
 #elif TARGET_OS_MAC
+
+- (NSView *)contentView {
+    return self;
+}
+
+- (instancetype)initWithCoder:(NSCoder *)coder {
+    if (self = [super initWithCoder:coder]) {
+        self = [self initWithStyle:(VMTableViewCellStyleDefault) reuseIdentifier:@""];
+    }
+    return self;
+}
+
+- (instancetype)initWithStyle:(VMTableViewCellStyle)style reuseIdentifier:(nullable NSString *)reuseIdentifier {
+    return self;
+}
+
 #endif // #if TARGET_OS_IPHONE
 
 @end

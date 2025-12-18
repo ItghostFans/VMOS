@@ -46,4 +46,16 @@
 
 #endif // #if TARGET_OS_IPHONE
 
+- (void)addToSuperview:(VMView *)superview {
+#if TARGET_OS_IPHONE
+    [superview addSubview:self];
+    _scrollView = scrollView;
+#elif TARGET_OS_MAC
+    VMScrollView *scrollView = VMScrollView.new;
+    [superview addSubview:scrollView];
+    _scrollView = (VMView *)scrollView;
+    scrollView.documentView = self;
+#endif // #if TARGET_OS_IPHONE
+}
+
 @end
