@@ -7,11 +7,15 @@
 
 #import <VMOS/VMKit.h>
 
+#if TARGET_OS_IPHONE
+#elif TARGET_OS_MAC
+
 NS_ASSUME_NONNULL_BEGIN
 
-API_AVAILABLE(macos(12.0))
 @interface VMScrollView : NSScrollView
 
 @end
 
 NS_ASSUME_NONNULL_END
+
+#endif // #if TARGET_OS_IPHONE

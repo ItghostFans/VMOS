@@ -70,6 +70,9 @@ typedef NS_ENUM(NSInteger, VMTableViewRowAnimation) {
 @property (assign, nonatomic) CGFloat estimatedSectionFooterHeight;
 @property (assign, nonatomic) CGFloat estimatedSectionHeaderHeight;
 
+@property (assign, nonatomic) BOOL alwaysBounceVertical;
+@property (assign, nonatomic) BOOL alwaysBounceHorizontal;
+
 @property (nonatomic, strong, nullable) NSTableHeaderView *tableHeaderView;
 @property (nonatomic, strong, nullable) VMView *tableFooterView;
 

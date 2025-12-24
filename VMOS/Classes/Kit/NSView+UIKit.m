@@ -22,7 +22,7 @@
         [self runtime_swizzleSel:@selector(initWithFrame:) newSel:@selector(initWithFrame_uikit:) cls:self];
         [self runtime_swizzleSel:@selector(layout) newSel:@selector(uikit_layout) cls:self];
         [self runtime_swizzleSel:@selector(hitTest:) newSel:@selector(uikit_hitTest:) cls:self];
-        [self runtime_swizzleSel:@selector(mouseDown:) newSel:@selector(uikit_mouseDown:) cls:self];
+//        [self runtime_swizzleSel:@selector(mouseDown:) newSel:@selector(uikit_mouseDown:) cls:self];
     });
 }
 
@@ -42,10 +42,10 @@
 }
 
 - (NSView *)uikit_hitTest:(NSPoint)point {
-    if (!self.userInteractionEnabled) {
-        return nil;
+    if (self.userInteractionEnabled) {
+        return [self uikit_hitTest:point];
     }
-    return [self uikit_hitTest:point];
+    return nil;
 }
 
 - (void)uikit_mouseDown:(NSEvent *)event {
@@ -89,7 +89,11 @@
 }
 
 - (BOOL)userInteractionEnabled {
-    return [objc_getAssociatedObject(self, @selector(userInteractionEnabled)) boolValue];
+    NSNumber *userInteractionEnabled = objc_getAssociatedObject(self, @selector(userInteractionEnabled));
+    if (!userInteractionEnabled) {
+        return YES;
+    }
+    return userInteractionEnabled.boolValue;
 }
 
 @end

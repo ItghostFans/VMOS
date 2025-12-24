@@ -16,8 +16,11 @@
     Method newMethod = class_getInstanceMethod(cls, newSel);
     IMP oldMethodImp = method_getImplementation(oldMethod);
     IMP newMethodImp = method_getImplementation(newMethod);
+    if (!oldMethod || !newMethod) {
+        return;
+    }
     if (class_addMethod(cls, oldSel, newMethodImp, method_getTypeEncoding(newMethod))) {
-        class_replaceMethod(cls, oldSel, oldMethodImp, method_getTypeEncoding(oldMethod));
+        class_replaceMethod(cls, newSel, oldMethodImp, method_getTypeEncoding(oldMethod));
     } else {
         method_exchangeImplementations(oldMethod, newMethod);
     }

@@ -64,6 +64,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface VMCollectionView : NSCollectionView
 
+@property (assign, nonatomic) BOOL alwaysBounceVertical;
+@property (assign, nonatomic) BOOL alwaysBounceHorizontal;
+
 - (instancetype)initWithFrame:(CGRect)frame collectionViewLayout:(NSCollectionViewLayout *)layout;
 - (void)registerClass:(nullable Class)cellClass forCellWithReuseIdentifier:(NSString *)identifier;
 - (void)registerClass:(nullable Class)viewClass forSupplementaryViewOfKind:(NSString *)elementKind withReuseIdentifier:(NSString *)identifier;

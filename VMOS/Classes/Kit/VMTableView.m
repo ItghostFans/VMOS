@@ -7,6 +7,7 @@
 
 #import "VMTableView.h"
 
+#import <VMOS/VMScrollView.h>
 #import <VMOS/NSBundle+Cross.h>
 
 @implementation VMTableView
@@ -15,19 +16,34 @@
 
 #elif TARGET_OS_MAC
 
+- (void)setAlwaysBounceVertical:(BOOL)alwaysBounceVertical {
+    _alwaysBounceVertical = alwaysBounceVertical;
+    [(VMScrollView *)self.scrollView setVerticalScrollElasticity:(alwaysBounceVertical ? NSScrollElasticityAllowed : NSScrollElasticityNone)];
+}
+
+- (void)setAlwaysBounceHorizontal:(BOOL)alwaysBounceHorizontal {
+    _alwaysBounceHorizontal = alwaysBounceHorizontal;
+    [(VMScrollView *)self.scrollView setHorizontalScrollElasticity:(alwaysBounceHorizontal ? NSScrollElasticityAllowed : NSScrollElasticityNone)];
+}
+
 - (instancetype)initWithFrame:(CGRect)frame style:(VMTableViewStyle)style {
     if (self = [super initWithFrame:frame]) {
         NSTableColumn *column = [[NSTableColumn alloc] initWithIdentifier:@""];
+        column.resizingMask = NSTableColumnAutoresizingMask;
         [self addTableColumn:column];
         self.allowsColumnResizing = YES;
         self.style = NSTableViewStyleFullWidth;
+        self.intercellSpacing = CGSizeMake(0.0f, 0.0f);
     }
     return self;
 }
 
 - (void)layoutSubviews {
     [super layoutSubviews];
-    self.tableColumns.firstObject.width = CGRectGetWidth(self.bounds);
+//    CGFloat width = CGRectGetWidth(self.bounds);
+//    if (self.tableColumns.firstObject.width != width) {
+//        self.tableColumns.firstObject.width = width;
+//    }
 }
 
 - (NSTableHeaderView *)tableHeaderView {
@@ -107,14 +123,12 @@
 - (void)addToSuperview:(VMView *)superview {
 #if TARGET_OS_IPHONE
     [superview addSubview:self];
-    _scrollView = scrollView;
+    _scrollView = (VMView *)self;
 #elif TARGET_OS_MAC
     VMScrollView *scrollView = VMScrollView.new;
     [superview addSubview:scrollView];
     _scrollView = (VMView *)scrollView;
     scrollView.documentView = self;
-//    [superview addSubview:self];
-//    _scrollView = (VMView *)self;
 #endif // #if TARGET_OS_IPHONE
 }
 

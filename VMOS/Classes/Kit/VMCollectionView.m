@@ -13,6 +13,16 @@
 
 #elif TARGET_OS_MAC
 
+- (void)setAlwaysBounceVertical:(BOOL)alwaysBounceVertical {
+    _alwaysBounceVertical = alwaysBounceVertical;
+    [(VMScrollView *)self.scrollView setVerticalScrollElasticity:(alwaysBounceVertical ? NSScrollElasticityAllowed : NSScrollElasticityNone)];
+}
+
+- (void)setAlwaysBounceHorizontal:(BOOL)alwaysBounceHorizontal {
+    _alwaysBounceHorizontal = alwaysBounceHorizontal;
+    [(VMScrollView *)self.scrollView setHorizontalScrollElasticity:(alwaysBounceHorizontal ? NSScrollElasticityAllowed : NSScrollElasticityNone)];
+}
+
 - (instancetype)initWithFrame:(CGRect)frame collectionViewLayout:(NSCollectionViewLayout *)layout {
     if (self = [self initWithFrame:frame]) {
         self.collectionViewLayout = layout;
@@ -49,7 +59,7 @@
 - (void)addToSuperview:(VMView *)superview {
 #if TARGET_OS_IPHONE
     [superview addSubview:self];
-    _scrollView = scrollView;
+    _scrollView = (VMView *)self;
 #elif TARGET_OS_MAC
     VMScrollView *scrollView = VMScrollView.new;
     [superview addSubview:scrollView];
