@@ -23,6 +23,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)layoutSubviews;
 - (void)layoutIfNeeded;
 
+- (void)insertSubview:(NSView *)view atIndex:(NSInteger)index;
+
 @end
 
 NS_ASSUME_NONNULL_END

@@ -6,7 +6,6 @@
 //
 
 #import <VMOS/VMKit.h>
-#import <VMOS/VMControl.h>
 
 NS_ASSUME_NONNULL_BEGIN
 

@@ -35,6 +35,8 @@ typedef NSScreen VMScreen;
 #import <VMOS/NSValue+UIKit.h>
 #import <VMOS/VMControlTypes.h>
 #import <VMOS/NSView+UIKit.h>
+#import <VMOS/VMControl.h>
+//#import <VMOS/VMButton.h> // 不明白为什么这里会导致VMControl无法找到
 #import <VMOS/VMView.h>
 #import <VMOS/VMViewController.h>
 #import <VMOS/NSImage+UIKit.h>
@@ -50,5 +52,6 @@ typedef NSScreen VMScreen;
 #import <VMOS/VMTableViewCell.h>
 #import <VMOS/VMTableViewHeaderFooterView.h>
 #import <VMOS/VMScrollView.h>
+#import <VMOS/VMStackView.h>
 
 //#endif /* VMKit_h */

@@ -72,6 +72,14 @@
     [self layoutSubtreeIfNeeded];
 }
 
+- (void)insertSubview:(NSView *)view atIndex:(NSInteger)index {
+    NSView *subview = nil;
+    if (index < self.subviews.count) {
+        subview = [self.subviews objectAtIndex:index];
+    }
+    [self addSubview:view positioned:(NSWindowBelow) relativeTo:subview];
+}
+
 - (void)setBackgroundColor:(VMColor *)backgroundColor {
     self.layer.backgroundColor = backgroundColor.CGColor;
 }
