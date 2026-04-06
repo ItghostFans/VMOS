@@ -19,6 +19,14 @@
     return NO;
 }
 
+- (void)setAllowsSelection:(BOOL)allowsSelection {
+    self.selectable = allowsSelection;
+}
+
+- (BOOL)allowsSelection {
+    return self.selectable;
+}
+
 - (void)setContentInset:(VMEdgeInsets)contentInset {
 }
 

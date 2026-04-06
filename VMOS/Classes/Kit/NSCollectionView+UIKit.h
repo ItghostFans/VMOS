@@ -16,6 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (assign, nonatomic) BOOL pagingEnabled;
 @property (assign, nonatomic) VMEdgeInsets contentInset;
+@property (assign, nonatomic) BOOL allowsSelection;
 
 - (nullable __kindof NSCollectionView *)cellForItemAtIndexPath:(NSIndexPath *)indexPath;
 
