@@ -44,4 +44,12 @@ typedef NSEdgeInsets VMEdgeInsets;
 #define VMEdgeInsetsEqualToEdgeInsets NSEdgeInsetsEqual
 #endif // #if TARGET_OS_IPHONE
 
+/// CGRect转成NSDictionry{@"x": @0.0, @"y": @0.0, @"width": @0.0, @"height": @0.0}。
+/// - Parameter frame: CGRect区域。
+extern NSDictionary *CGRectToObject(CGRect frame);
+
+/// NSDictionoary{@"x": @0.0, @"y": @0.0, @"width": @0.0, @"height": @0.0}转成CGRect。
+/// - Parameter object: NSDictionry对象。
+extern CGRect CGRectFromObject(NSDictionary *object);
+
 #endif /* VMGeometry_h */
