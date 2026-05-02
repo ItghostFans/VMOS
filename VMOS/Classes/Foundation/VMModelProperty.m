@@ -43,7 +43,15 @@
             }
         }
         if (!_setter) {
-            _setter = NSSelectorFromString([NSString stringWithFormat:@"set%@:", _name.capitalizedString]);
+            NSString *setName = nil;
+            if (_name.length > 1) {
+                NSString *first = [_name substringWithRange:NSMakeRange(0, 1)].uppercaseString;
+                NSString *last = [_name substringFromIndex:1];
+                setName = [NSString stringWithFormat:@"%@%@", first, last];
+            } else {
+                setName = _name.uppercaseString;
+            }
+            _setter = NSSelectorFromString([NSString stringWithFormat:@"set%@:", setName]);
         }
         if (!_getter) {
             _getter = NSSelectorFromString(_name);
