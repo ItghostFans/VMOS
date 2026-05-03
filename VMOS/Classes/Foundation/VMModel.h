@@ -30,31 +30,54 @@ typedef NS_ENUM(NSInteger, VMMError) {
 #pragma mark - Modeling
 
 /// 从json字符串初始化Model。
+/// - Note: 这里要注意，是VMModel的子类来调用。
 /// - Parameters:
-///   - json: 字符串 @"{\"property\": \”我是字段\"}"
-///   - callback: 主线程回调，回调Model或者Error。
+///   - json: 字符串 @"{\"property\": \”我是字段\"}"。
+///   - queue: （Option）派发的队列。为空则在主线程回调callback。
+///   - callback: 回调Model或者Error。
 + (void)modelWithJson:(NSString * _Nonnull)json
+                queue:(dispatch_queue_t _Nullable)queue
              callback:(void(^ _Nonnull)(VMModel * _Nullable model, NSError * _Nullable error))callback;
 
 /// 从data二制数据初始化Model。
+/// - Note: 这里要注意，是VMModel的子类来调用。
 /// - Parameters:
 ///   - data: 二进制数据。
-///   - callback: 主线程回调，回调Model或者Error。
+///   - queue: （Option）派发的队列。为空则在主线程回调callback。
+///   - callback: 回调Model或者Error。
 + (void)modelWithData:(NSData * _Nonnull)data
+                queue:(dispatch_queue_t _Nullable)queue
              callback:(void(^ _Nonnull)(VMModel * _Nullable model, NSError * _Nullable error))callback;
 
 /// 从Dictionary初始化Model。
+/// - Note: 这里要注意，是VMModel的子类来调用。
 /// - Parameters:
 ///   - dictinary: @{@"property": @"我是字段"}
-///   - callback: 主线程回调，回调Model或者Error。
+///   - queue: （Option）派发的队列。为空则在主线程回调callback。
+///   - callback: 回调Model或者Error。
 + (void)modelWithDictinary:(NSDictionary * _Nonnull)dictinary
+                     queue:(dispatch_queue_t _Nullable)queue
                   callback:(void(^ _Nonnull)(VMModel * _Nullable model, NSError * _Nullable error))callback;
 
 #pragma mark - JsonModeling
 
-+ (void)dictionaryWithModel:(VMModel *)model callback:(void(^ _Nonnull)(NSDictionary * _Nullable dictionary, NSError * _Nullable error))callback;
+/// 将Model转Dictionary。
+/// - Parameters:
+///   - model: VMModel
+///   - queue: （Option）派发的队列。为空则在主线程回调callback。
+///   - callback: 回调Dictionary。
++ (void)dictionaryWithModel:(VMModel *)model
+                      queue:(dispatch_queue_t _Nullable)queue
+                   callback:(void(^ _Nonnull)(NSDictionary * _Nullable dictionary, NSError * _Nullable error))callback;
 
-+ (void)arrayWithModels:(NSArray<__kindof VMModel *> * _Nonnull)models callback:(void(^ _Nonnull)(NSArray<__kindof NSDictionary *> * _Nullable model))callback;
+/// 将Model数组转json 数组。
+/// - Parameters:
+///   - models: VMModels。
+///   - queue: （Option）派发的队列。为空则在主线程回调callback。
+///   - callback: 回调Dictionarys。
++ (void)arrayWithModels:(NSArray<__kindof VMModel *> * _Nonnull)models
+                queue:(dispatch_queue_t _Nullable)queue
+               callback:(void(^ _Nonnull)(NSArray<__kindof NSDictionary *> * _Nullable model))callback;
 
 #pragma mark - Core
 
@@ -65,8 +88,10 @@ typedef NS_ENUM(NSInteger, VMMError) {
 /// 获取Model的属性信息。
 /// - Parameters:
 ///   - model: Model。
-///   - callback: 主线程回调，回调Model和对应的属性信息。
+///   - queue: （Option）派发的队列。为空则在主线程回调callback。
+///   - callback: 回调Model和对应的属性信息。
 + (void)propertiesOfModel:(Class _Nonnull)model
+                    queue:(dispatch_queue_t _Nullable)queue
                  callback:(void(^ _Nonnull)(Class _Nonnull model, NSArray<__kindof VMModelProperty *> * _Nullable properties))callback;
 
 @end

@@ -21,32 +21,35 @@
 #pragma mark - Modeling Async
 
 + (void)modelWithJson:(NSString * _Nonnull)json
+                queue:(dispatch_queue_t _Nullable)queue
              callback:(void(^ _Nonnull)(VMModel * _Nullable model, NSError * _Nullable error))callback {
-    [self propertiesOfModel:self callback:^(Class  _Nonnull __unsafe_unretained model, NSArray<__kindof VMModelProperty *> * _Nullable properties) {
+    [self propertiesOfModel:self queue:dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0) callback:^(Class  _Nonnull __unsafe_unretained model, NSArray<__kindof VMModelProperty *> * _Nullable properties) {
         NSError *error = nil;
         VMModel *object = [[model alloc] initWithJson:json error:&error];
-        dispatch_async(dispatch_get_main_queue(), ^{
+        dispatch_async(queue ? : dispatch_get_main_queue(), ^{
             callback(object, error);
         });
     }];
 }
 
 + (void)modelWithData:(NSData * _Nonnull)data
+                queue:(dispatch_queue_t _Nullable)queue
              callback:(void(^ _Nonnull)(VMModel * _Nullable model, NSError * _Nullable error))callback {
-    [self propertiesOfModel:self callback:^(Class  _Nonnull __unsafe_unretained model, NSArray<__kindof VMModelProperty *> * _Nullable properties) {
+    [self propertiesOfModel:self queue:dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0) callback:^(Class  _Nonnull __unsafe_unretained model, NSArray<__kindof VMModelProperty *> * _Nullable properties) {
         NSError *error = nil;
         VMModel *object = [[model alloc] initWithData:data error:&error];
-        dispatch_async(dispatch_get_main_queue(), ^{
+        dispatch_async(queue ? : dispatch_get_main_queue(), ^{
             callback(object, error);
         });
     }];
 }
 
 + (void)modelWithDictinary:(NSDictionary * _Nonnull)dictinary
+                     queue:(dispatch_queue_t _Nullable)queue
                   callback:(void(^ _Nonnull)(VMModel * _Nullable model, NSError * _Nullable error))callback {
-    [self propertiesOfModel:self callback:^(Class  _Nonnull __unsafe_unretained model, NSArray<__kindof VMModelProperty *> * _Nullable properties) {
+    [self propertiesOfModel:self queue:dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0) callback:^(Class  _Nonnull __unsafe_unretained model, NSArray<__kindof VMModelProperty *> * _Nullable properties) {
         VMModel *object = [[model alloc] initWithDictionary:dictinary];
-        dispatch_async(dispatch_get_main_queue(), ^{
+        dispatch_async(queue ? : dispatch_get_main_queue(), ^{
             callback(object, nil);
         });
     }];
@@ -54,24 +57,28 @@
 
 #pragma mark - JsonModeling Async
 
-+ (void)dictionaryWithModel:(VMModel *)model callback:(void(^ _Nonnull)(NSDictionary * _Nullable dictionary, NSError * _Nullable error))callback {
-    [self propertiesOfModel:model.class callback:^(Class  _Nonnull __unsafe_unretained modelClass, NSArray<__kindof VMModelProperty *> * _Nullable properties) {        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
++ (void)dictionaryWithModel:(VMModel *)model
+                      queue:(dispatch_queue_t _Nullable)queue
+                   callback:(void(^ _Nonnull)(NSDictionary * _Nullable dictionary, NSError * _Nullable error))callback {
+    [self propertiesOfModel:model.class queue:dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0) callback:^(Class  _Nonnull __unsafe_unretained modelClass, NSArray<__kindof VMModelProperty *> * _Nullable properties) {        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
             NSDictionary *dictionary = model.dictionary;
-            dispatch_async(dispatch_get_main_queue(), ^{
+            dispatch_async(queue ? : dispatch_get_main_queue(), ^{
                 callback(dictionary, nil);
             });
         });
     }];
 }
 
-+ (void)arrayWithModels:(NSArray<__kindof VMModel *> * _Nonnull)models callback:(void(^ _Nonnull)(NSArray<__kindof NSDictionary *> * _Nullable array))callback {
++ (void)arrayWithModels:(NSArray<__kindof VMModel *> * _Nonnull)models
+                  queue:(dispatch_queue_t _Nullable)queue
+               callback:(void(^ _Nonnull)(NSArray<__kindof NSDictionary *> * _Nullable array))callback {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
         NSMutableArray *array = [NSMutableArray arrayWithCapacity:models.count];
         for (VMModel *model in models) {
             NSAssert([model isKindOfClass:self], @"Check!");
             [array addObject:model.dictionary];
         }
-        dispatch_async(dispatch_get_main_queue(), ^{
+        dispatch_async(queue ? : dispatch_get_main_queue(), ^{
             callback(array);
         });
     });
@@ -93,6 +100,7 @@
 }
 
 + (void)propertiesOfModel:(Class _Nonnull)model
+                    queue:(dispatch_queue_t _Nullable)queue
                  callback:(void(^ _Nonnull)(Class _Nonnull model, NSArray<__kindof VMModelProperty *> * _Nullable properties))callback {
     @synchronized (self.modelProperties) {
         NSMutableArray<__kindof VMModelProperty *> *properties = self.modelProperties[NSStringFromClass(model)];
@@ -126,18 +134,18 @@
             for (VMModelProperty *property in properties) {
                 if (property.annotate.isModel) {
                     dispatch_group_enter(group);
-                    [VMModel propertiesOfModel:property.annotate.model callback:^(Class  _Nonnull __unsafe_unretained model, NSArray<__kindof VMModelProperty *> * _Nullable properties) {
+                    [VMModel propertiesOfModel:property.annotate.model queue:dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0) callback:^(Class  _Nonnull __unsafe_unretained model, NSArray<__kindof VMModelProperty *> * _Nullable properties) {
                         dispatch_group_leave(group);
                     }];
                 } else
                 if (property.annotate.elementModel) {
                     dispatch_group_enter(group);
-                    [VMModel propertiesOfModel:property.annotate.elementModel callback:^(Class  _Nonnull __unsafe_unretained model, NSArray<__kindof VMModelProperty *> * _Nullable properties) {
+                    [VMModel propertiesOfModel:property.annotate.elementModel queue:dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0) callback:^(Class  _Nonnull __unsafe_unretained model, NSArray<__kindof VMModelProperty *> * _Nullable properties) {
                         dispatch_group_leave(group);
                     }];
                 }
             }
-            dispatch_group_notify(group, dispatch_get_main_queue(), ^{
+            dispatch_group_notify(group, queue ? : dispatch_get_main_queue(), ^{
                 @synchronized (self.modelPropertiesTasks) {
                     NSMutableArray *modelPropertiesTasks = self.modelPropertiesTasks[NSStringFromClass(model)];
                     for (id task in modelPropertiesTasks) {
