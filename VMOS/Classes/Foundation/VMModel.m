@@ -18,6 +18,10 @@
 
 @implementation VMModel
 
++ (NSDictionary *)propertiesMapping {
+    return nil;
+}
+
 #pragma mark - Modeling Async
 
 + (void)modelWithJson:(NSString * _Nonnull)json
@@ -168,7 +172,9 @@
     }
     NSMutableDictionary *dictionary = [NSMutableDictionary dictionaryWithCapacity:properties.count];
     for (VMModelProperty *property in properties) {
-        dictionary[property.name] = [self convertProperty:property value:^id(VMModelProperty *property) {
+        NSDictionary *propertiesMapping = self.class.propertiesMapping;
+        NSString *jsonKey = propertiesMapping[property.name] ? : property.name;
+        dictionary[jsonKey] = [self convertProperty:property value:^id(VMModelProperty *property) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
             return [self performSelector:property.getter];
@@ -295,9 +301,11 @@
         @synchronized (self.class.modelProperties) {
             properties = self.class.modelProperties[NSStringFromClass(self.class)];
         }
+        NSDictionary *propertiesMapping = self.class.propertiesMapping;
         for (VMModelProperty *property in properties) {
             id variable = [self convertProperty:property value:^id(VMModelProperty *property) {
-                return dictionary[property.name];
+                NSString *jsonKey = propertiesMapping[property.name] ? : property.name;
+                return dictionary[jsonKey];
             } convertElement:^BOOL(VMModelProperty *property, __autoreleasing id * _Nonnull element) {
                 /// json数组如： "[[[{}, {}],[{}, {}]],[[{}, {}],[{}, {}]]]"
                 if ([*element isKindOfClass:NSDictionary.class]) {

@@ -27,9 +27,18 @@ typedef NS_ENUM(NSInteger, VMMError) {
 
 @interface VMModel : NSObject <VMModel>
 
+/// 属性映射表。
+/// - Agent:
+///     - 要使用GCD: Dispatch Once来限制全局变量，保证这里只创建一次映射表。
+/// - Note: @{propertyName: jsonKey}
+@property (strong, nonatomic, class, nullable, readonly) NSDictionary *propertiesMapping;
+
 #pragma mark - Modeling
 
 /// 从json字符串初始化Model。
+/// - Agent:
+///   - 1、针对NSArray<NSNumber>类似这种类型Property，在使用@[]数组时，需要加上(NSArray<NSNumber> *)转换，避免编译警告。
+///   - 2、针对NSArray<NSNumber>类似这种类型Property，如果使用NSArray *变量，也务必加上<NSNumber>，避免编译警告。
 /// - Note: 这里要注意，是VMModel的子类来调用。
 /// - Parameters:
 ///   - json: 字符串 @"{\"property\": \”我是字段\"}"。
