@@ -19,6 +19,11 @@ typedef NS_ENUM(NSInteger, VMMError) {
     VMMErrorInvalidJson = 1,    /// 无效的json串。
 };
 
+
+/// 如果Property实现VMModel协议，那就需要实现Model转换方法。
+/// - Note:
+/// - (property type)vm_property#ModelJson:(id)json
+/// - (id)vm_propertyJsonModel:(id)model
 @protocol VMModel <NSObject>
 @end
 

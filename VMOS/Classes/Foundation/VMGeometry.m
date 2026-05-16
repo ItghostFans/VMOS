@@ -23,3 +23,7 @@ CGRect CGRectFromObject(NSDictionary *object) {
     };
     return frame;
 }
+
+NSString * NSStringFromCGRect(CGRect frame) {
+    return NSStringFromRect(frame);
+}
