@@ -317,10 +317,12 @@
                 NSAssert([model isKindOfClass:NSDictionary.class], @"Check!");
                 return [[property.annotate.model alloc] initWithDictionary:model];
             }];
+            if (![variable isKindOfClass:NSNull.class]) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
-            [self performSelector:property.setter withObject:variable];
+                [self performSelector:property.setter withObject:variable];
 #pragma clang diagnostic pop
+            }
         }
     }
     return self;
