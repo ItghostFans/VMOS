@@ -130,11 +130,22 @@
             }
         }
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+            dispatch_group_t group = dispatch_group_create();
+            
+            // Super class。
+            Class superClass = class_getSuperclass(model);
+            while (superClass != VMModel.class) {
+                dispatch_group_enter(group);
+                [VMModel propertiesOfModel:superClass queue:queue callback:^(Class  _Nonnull __unsafe_unretained model, NSArray<__kindof VMModelProperty *> * _Nullable properties) {
+                    dispatch_group_leave(group);
+                }];
+                superClass = class_getSuperclass(superClass);
+            }
+            
             NSMutableArray<__kindof VMModelProperty *> *properties = [self propertiesOfModel:model];
             @synchronized (self.modelProperties) {
                 self.modelProperties[NSStringFromClass(model)] = properties;
             }
-            dispatch_group_t group = dispatch_group_create();
             for (VMModelProperty *property in properties) {
                 if (property.annotate.isModel) {
                     dispatch_group_enter(group);
@@ -163,12 +174,26 @@
     }
 }
 
+#pragma mark - Private Sync
+
+- (NSMutableArray<__kindof VMModelProperty *> *)propertiesOfClass:(Class)model {
+    NSMutableArray<__kindof VMModelProperty *> *properties = self.class.modelProperties[NSStringFromClass(self.class)];
+    
+    // Super class。
+    Class superClass = class_getSuperclass(self.class);
+    while (superClass != VMModel.class) {
+        [properties addObjectsFromArray:self.class.modelProperties[NSStringFromClass(superClass)]];
+        superClass = class_getSuperclass(superClass);
+    }
+    return properties;
+}
+
 #pragma mark - JsonModeling Sync
 
 - (nonnull NSDictionary *)dictionary {
     NSMutableArray<__kindof VMModelProperty *> *properties = nil;
     @synchronized (self.class.modelProperties) {
-        properties = self.class.modelProperties[NSStringFromClass(self.class)];
+        properties = [self propertiesOfClass:self.class];
     }
     NSMutableDictionary *dictionary = [NSMutableDictionary dictionaryWithCapacity:properties.count];
     for (VMModelProperty *property in properties) {
@@ -299,7 +324,7 @@
     if (self = [self init]) {
         NSMutableArray<__kindof VMModelProperty *> *properties = nil;
         @synchronized (self.class.modelProperties) {
-            properties = self.class.modelProperties[NSStringFromClass(self.class)];
+            properties = [self propertiesOfClass:self.class];
         }
         NSDictionary *propertiesMapping = self.class.propertiesMapping;
         for (VMModelProperty *property in properties) {
