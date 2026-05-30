@@ -30,7 +30,10 @@ typedef NS_ENUM(NSInteger, VMMError) {
 @interface NSObject (VMModel) <VMModel>
 @end
 
-@interface VMModel : NSObject <VMModel>
+/// 可存储Model。
+/// - Note:
+///     readonly的Property不能保存。
+@interface VMModel : NSObject <VMModel, NSCopying>
 
 /// 属性映射表。
 /// - Agent:

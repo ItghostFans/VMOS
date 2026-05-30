@@ -66,7 +66,8 @@ NS_ASSUME_NONNULL_BEGIN
 @interface VMModelProperty : NSObject
 
 @property (strong, nonatomic, readonly, nonnull) NSString *name;
-@property (strong, nonatomic, readonly, nonnull) VMModelPropertyAnnotate *annotate;
+/// 如果是readonly就为空。
+@property (strong, nonatomic, readonly, nullable) VMModelPropertyAnnotate *annotate;
 
 @property (assign, nonatomic, readonly) BOOL readonly;
 

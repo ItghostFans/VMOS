@@ -379,4 +379,24 @@
     return properties;
 }
 
+#pragma mark - NSCopying
+
+- (id)copyWithZone:(nullable NSZone *)zone {
+    BOOL parseProperties = NO;
+    @synchronized (self.class.modelProperties) {
+        parseProperties = self.class.modelProperties[NSStringFromClass(self.class)];
+    }
+    if (!parseProperties) {
+        dispatch_group_t group = dispatch_group_create();
+        dispatch_group_enter(group);
+        [self.class propertiesOfModel:self.class queue:dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0) callback:^(Class  _Nonnull __unsafe_unretained model, NSArray<__kindof VMModelProperty *> * _Nullable properties) {
+            dispatch_group_leave(group);
+        }];
+        // TODO: 这里后期考虑把VMModel全体在启动App里，就把所有属性获取到。
+        dispatch_group_wait(group, DISPATCH_TIME_FOREVER);
+    }
+    VMModel *clone = [[self.class allocWithZone:zone] initWithDictionary:[self dictionary]];
+    return clone;
+}
+
 @end

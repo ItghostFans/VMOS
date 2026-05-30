@@ -26,12 +26,6 @@
             NSString *attributeName = [NSString stringWithUTF8String:propertyAttribute[index].name];
             NSString *attribute = [NSString stringWithUTF8String:propertyAttribute[index].value];
             _attributes[attributeName] = attribute;
-            if ([attributeName isEqualToString:@"R"]) {
-                _readonly = YES;
-            } else
-            if ([attributeName isEqualToString:@"T"]) {
-                _annotate = [[VMModelPropertyAnnotate alloc] initWithAttribute:attribute];
-            } else
             if ([attributeName isEqualToString:@"G"]) {
                 _getter = NSSelectorFromString(attribute);
             } else
@@ -42,6 +36,14 @@
                 _variable = attribute;
             }
         }
+        
+        if (_attributes[@"R"]) {
+            _readonly = YES;
+        }
+        if (!_readonly && _attributes[@"T"]) {
+            _annotate = [[VMModelPropertyAnnotate alloc] initWithAttribute:_attributes[@"T"]];
+        }
+            
         if (!_setter) {
             NSString *setName = nil;
             if (_name.length > 1) {
