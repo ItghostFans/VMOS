@@ -29,4 +29,28 @@
     return hitView;
 }
 
+#if TARGET_OS_IPHONE
+- (UIViewController *)controller {
+    UIResponder *responder = self;
+    UIViewController *controller = nil;
+#elif TARGET_OS_MAC
+- (NSViewController *)controller {
+    NSResponder *responder = self;
+    NSViewController *controller = nil;
+#endif // #if TARGET_OS_IPHONE
+    do {
+        responder = responder.nextResponder;
+#if TARGET_OS_IPHONE
+        if ([responder isKindOfClass:UIViewController.class]) {
+            controller = (UIViewController *)responder;
+#elif TARGET_OS_MAC
+        if ([responder isKindOfClass:NSViewController.class]) {
+            controller = (NSViewController *)responder;
+#endif // #if TARGET_OS_IPHONE
+            break;
+        }
+    } while (YES);
+    return controller;
+}
+
 @end

@@ -57,12 +57,10 @@
 - (void)registerClass:(nullable Class)cellClass forCellReuseIdentifier:(NSString *)identifier {
     NSArray<__kindof NSBundle *> *allBundles = NSBundle.allBizBundles;
     for (NSBundle *cellBundle in allBundles) {
-        @try {
+        if ([cellBundle pathForResource:identifier ofType:@"nib"]) {
             NSNib *cellXib = [[NSNib alloc] initWithNibNamed:identifier bundle:cellBundle];
             [self registerNib:cellXib forIdentifier:identifier];
             return;
-        } @catch (NSException *exception) {
-        } @finally {
         }
     }
 }

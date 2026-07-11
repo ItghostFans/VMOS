@@ -18,6 +18,29 @@
 typedef UIColor VMColor;
 typedef UIBezierPath VMBezierPath;
 typedef UIImage VMImage;
+#define VMFontWeight UIFontWeight
+#define VMFontWeightUltraLight UIFontWeightUltraLight
+#define VMFontWeightThin UIFontWeightThin
+#define VMFontWeightLight UIFontWeightLight
+#define VMFontWeightRegular UIFontWeightRegular
+#define VMFontWeightMedium UIFontWeightMedium
+#define VMFontWeightSemibold UIFontWeightSemibold
+#define VMFontWeightBold UIFontWeightBold
+#define VMFontWeightHeavy UIFontWeightHeavy
+#define VMFontWeightBlack UIFontWeightBlack
+
+#define VMImageResizingMode UIImageResizingMode
+#define VMImageResizingModeStretch UIImageResizingModeStretch
+#define VMImageResizingModeTile UIImageResizingModeTile
+
+#define VMImageSymbolConfiguration UIImageSymbolConfiguration
+
+#define VMImageSymbolScale UIImageSymbolScale
+#define VMImageSymbolScaleDefault UIImageSymbolScaleDefault
+#define VMImageSymbolScaleUnspecified UIImageSymbolScaleUnspecified
+#define VMImageSymbolScaleSmall UIImageSymbolScaleSmall
+#define VMImageSymbolScaleMedium UIImageSymbolScaleMedium
+#define VMImageSymbolScaleLarge UIImageSymbolScaleLarge
 typedef UIFont VMFont;
 typedef UIImageView VMImageView;
 typedef UIScreen VMScreen;
@@ -25,6 +48,27 @@ typedef UIScreen VMScreen;
 typedef NSColor VMColor;
 typedef NSBezierPath VMBezierPath;
 typedef NSImage VMImage;
+#define VMFontWeight NSFontWeight
+#define VMFontWeightUltraLight NSFontWeightUltraLight
+#define VMFontWeightThin NSFontWeightThin
+#define VMFontWeightLight NSFontWeightLight
+#define VMFontWeightRegular NSFontWeightRegular
+#define VMFontWeightMedium NSFontWeightMedium
+#define VMFontWeightSemibold NSFontWeightSemibold
+#define VMFontWeightBold NSFontWeightBold
+#define VMFontWeightHeavy NSFontWeightHeavy
+#define VMFontWeightBlack NSFontWeightBlack
+
+#define VMImageResizingMode NSImageResizingMode
+#define VMImageResizingModeStretch NSImageResizingModeStretch
+#define VMImageResizingModeTile NSImageResizingModeTile
+
+#define VMImageSymbolConfiguration NSImageSymbolConfiguration
+
+#define VMImageSymbolScale NSImageSymbolScale
+#define VMImageSymbolScaleSmall NSImageSymbolScaleSmall
+#define VMImageSymbolScaleMedium NSImageSymbolScaleMedium
+#define VMImageSymbolScaleLarge NSImageSymbolScaleLarge
 typedef NSFont VMFont;
 typedef NSImageView VMImageView;
 typedef NSScreen VMScreen;

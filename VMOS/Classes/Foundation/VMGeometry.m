@@ -24,6 +24,15 @@ CGRect CGRectFromObject(NSDictionary *object) {
     return frame;
 }
 
+#if TARGET_OS_IPHONE
+#elif TARGET_OS_MAC
+
 NSString * NSStringFromCGRect(CGRect frame) {
     return NSStringFromRect(frame);
 }
+
+CGRect CGRectFromString(NSString *string) {
+    return NSRectFromString(string);
+}
+
+#endif // #if TARGET_OS_IPHONE

@@ -20,8 +20,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 #if TARGET_OS_IPHONE
 @interface VMView : UIView
+- (UIViewController *)controller;
 #elif TARGET_OS_MAC
 @interface VMView : NSView
+- (NSViewController *)controller;
 #endif // #if TARGET_OS_IPHONE
 
 @end

@@ -14,7 +14,18 @@
 @implementation NSImage (UIKit)
 
 + (nullable instancetype)systemImageNamed:(NSString *)name {
-    return [NSImage imageWithSystemSymbolName:@"square.and.arrow.up.circle" accessibilityDescription:nil];
+    return [NSImage imageWithSystemSymbolName:name accessibilityDescription:nil];
+}
+
+- (VMImage *)resizableImageWithCapInsets:(VMEdgeInsets)capInsets
+                            resizingMode:(VMImageResizingMode)resizingMode {
+    self.capInsets = capInsets;
+    self.resizingMode = resizingMode;
+    return self;
+}
+
+- (nullable VMImage *)imageByApplyingSymbolConfiguration:(VMImageSymbolConfiguration *)configuration {
+    return [self imageWithSymbolConfiguration:configuration];
 }
 
 @end

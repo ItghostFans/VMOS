@@ -52,8 +52,17 @@ extern NSDictionary *CGRectToObject(CGRect frame);
 /// - Parameter object: NSDictionry对象。
 extern CGRect CGRectFromObject(NSDictionary *object);
 
+#if TARGET_OS_IPHONE
+#elif TARGET_OS_MAC
+
 /// 兼容iOS
 /// - Parameter frame: Frame区域。
 extern NSString * NSStringFromCGRect(CGRect frame);
+
+/// 兼容iOS
+/// - Parameter string: CGRect的字符串格式。
+extern CGRect CGRectFromString(NSString *string);
+
+#endif // #if TARGET_OS_IPHONE
 
 #endif /* VMGeometry_h */

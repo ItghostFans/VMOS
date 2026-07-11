@@ -17,6 +17,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (nullable instancetype)systemImageNamed:(NSString *)name;
 
+- (VMImage *)resizableImageWithCapInsets:(VMEdgeInsets)capInsets
+                            resizingMode:(VMImageResizingMode)resizingMode;
+
+- (nullable VMImage *)imageByApplyingSymbolConfiguration:(VMImageSymbolConfiguration *)configuration;
+
 @end
 
 NS_ASSUME_NONNULL_END
