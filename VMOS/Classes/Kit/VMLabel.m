@@ -29,6 +29,12 @@
     return [NSString stringWithFormat:@"(VMLabel *)%p {text: %@, frame: %@, bounds: %@, intrinsicContentSize: %@}", self.textStorage.string, self, NSStringFromRect(self.frame), NSStringFromRect(self.bounds), NSStringFromSize(self.intrinsicContentSize)];
 }
 
+- (void)setNeedsDisplay {
+    /// 对于重绘的控件，最好就先刷新内容尺寸。
+    [self invalidateIntrinsicContentSize];
+    [super setNeedsDisplay];
+}
+
 #pragma mark - UILabel
 
 - (void)setAttributedText:(NSAttributedString *)attributedText {
@@ -147,6 +153,7 @@
 - (CGSize)intrinsicContentSize {
     _textContainer.size = CGSizeZero;
     CGRect textRect = [_layoutManager boundingRectForGlyphRange:NSMakeRange(0, _layoutManager.numberOfGlyphs) inTextContainer:_textContainer];
+    NSLog(@"%@ %@", _textStorage.string, NSStringFromRect(textRect));
     return CGSizeMake(ceil(textRect.size.width), ceil(textRect.size.height));
 }
 
@@ -166,19 +173,23 @@
 //    }
 }
 
+- (CGPoint)startPoint {
+    CGRect textRect = [_layoutManager boundingRectForGlyphRange:NSMakeRange(0, _layoutManager.numberOfGlyphs) inTextContainer:_textContainer];
+    CGPoint startPoint = CGPointZero;
+    if (CGRectGetWidth(self.bounds) > CGRectGetWidth(textRect)) {
+        startPoint = CGPointMake(CGRectGetWidth(self.bounds) > CGRectGetWidth(textRect), (CGRectGetHeight(self.bounds) - CGRectGetHeight(textRect)) / 2);
+    } else {
+        startPoint = CGPointMake(0.0f, (CGRectGetHeight(self.bounds) - CGRectGetHeight(textRect)) / 2);
+    }
+    return startPoint;
+}
+
 - (void)drawRect:(CGRect)rect {
     [super drawRect:rect];
     rect = self.bounds;
     if (_layoutManager.numberOfGlyphs) {
-        CGRect textRect = [_layoutManager boundingRectForGlyphRange:NSMakeRange(0, _layoutManager.numberOfGlyphs) inTextContainer:_textContainer];
-        CGPoint drawPoint = CGPointZero;
-        if (CGRectGetWidth(rect) > CGRectGetWidth(textRect)) {
-            drawPoint = CGPointMake(CGRectGetWidth(rect) > CGRectGetWidth(textRect), (CGRectGetHeight(rect) - CGRectGetHeight(textRect)) / 2);
-        } else {
-            drawPoint = CGPointMake(0.0f, (CGRectGetHeight(rect) - CGRectGetHeight(textRect)) / 2);
-        }
         _textContainer.size = rect.size;
-        [_layoutManager drawGlyphsForGlyphRange:NSMakeRange(0, _layoutManager.numberOfGlyphs) atPoint:drawPoint];
+        [_layoutManager drawGlyphsForGlyphRange:NSMakeRange(0, _layoutManager.numberOfGlyphs) atPoint:self.startPoint];
     }
 }
 
@@ -247,7 +258,6 @@
     return attributedText;
 }
 
-
 - (NSAttributedString *)attributedCharacterAtPoint:(CGPoint)point {
     NSUInteger characterIndex = [self indexAtPoint:point];
     if (characterIndex != NSNotFound && characterIndex < _textStorage.length) {
@@ -315,8 +325,11 @@
     if (!_textStorage.length) {
         return NSNotFound;
     }
+    CGPoint startPoint = self.startPoint;
+    point.x -= startPoint.x;
+    point.y -= startPoint.y;
+    // TODO: 后面这里如果测试通过，就可以把这里给删除注释。
     CGRect textRect = [_layoutManager boundingRectForGlyphRange:NSMakeRange(0, _layoutManager.numberOfGlyphs) inTextContainer:_textContainer];
-    point.y -= CGRectGetMidY(self.bounds) - CGRectGetMidY(textRect);
     if (!CGRectContainsPoint(textRect, point)) {
         return NSNotFound;
     }
