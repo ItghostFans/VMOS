@@ -25,6 +25,10 @@
     return self;
 }
 
+- (NSString *)description {
+    return [NSString stringWithFormat:@"(VMLabel *)%p {text: %@, frame: %@, bounds: %@, intrinsicContentSize: %@}", self.textStorage.string, self, NSStringFromRect(self.frame), NSStringFromRect(self.bounds), NSStringFromSize(self.intrinsicContentSize)];
+}
+
 #pragma mark - UILabel
 
 - (void)setAttributedText:(NSAttributedString *)attributedText {
@@ -102,7 +106,7 @@
         [self setContentCompressionResistancePriority:(NSLayoutPriorityDefaultHigh) forOrientation:(NSLayoutConstraintOrientationVertical)];
     }
 #endif // #if TARGET_OS_IPHONE
-    [self setNeedsLayout];
+    [self setNeedsDisplay];
 }
 
 - (NSInteger)numberOfLines {
@@ -111,7 +115,7 @@
 
 - (void)setLineBreakMode:(NSLineBreakMode)lineBreakMode {
     _textContainer.lineBreakMode = lineBreakMode;
-    [self setNeedsLayout];
+    [self setNeedsDisplay];
 }
 
 - (NSLineBreakMode)lineBreakMode {
@@ -131,7 +135,7 @@
             }
         }];
     }
-    [self setNeedsLayout];
+    [self setNeedsDisplay];
 }
 
 - (NSTextAlignment)textAlignment {
@@ -141,6 +145,7 @@
 #pragma mark - Super
 
 - (CGSize)intrinsicContentSize {
+    _textContainer.size = CGSizeZero;
     CGRect textRect = [_layoutManager boundingRectForGlyphRange:NSMakeRange(0, _layoutManager.numberOfGlyphs) inTextContainer:_textContainer];
     return CGSizeMake(ceil(textRect.size.width), ceil(textRect.size.height));
 }
@@ -154,10 +159,11 @@
 
 - (void)layoutSubviews {
     [super layoutSubviews];
-    if (!CGSizeEqualToSize(_textContainer.size, self.bounds.size)) {
-        _textContainer.size = self.bounds.size;
-        [self invalidateIntrinsicContentSize];
-    }
+//    if (!CGSizeEqualToSize(_textContainer.size, self.bounds.size)) {
+//        _textContainer.size = self.bounds.size;
+//        [self invalidateIntrinsicContentSize];
+//        [self setNeedsDisplay];
+//    }
 }
 
 - (void)drawRect:(CGRect)rect {
@@ -165,7 +171,13 @@
     rect = self.bounds;
     if (_layoutManager.numberOfGlyphs) {
         CGRect textRect = [_layoutManager boundingRectForGlyphRange:NSMakeRange(0, _layoutManager.numberOfGlyphs) inTextContainer:_textContainer];
-        CGPoint drawPoint = CGPointMake(0.0f, (CGRectGetHeight(rect) - CGRectGetHeight(textRect)) / 2);
+        CGPoint drawPoint = CGPointZero;
+        if (CGRectGetWidth(rect) > CGRectGetWidth(textRect)) {
+            drawPoint = CGPointMake(CGRectGetWidth(rect) > CGRectGetWidth(textRect), (CGRectGetHeight(rect) - CGRectGetHeight(textRect)) / 2);
+        } else {
+            drawPoint = CGPointMake(0.0f, (CGRectGetHeight(rect) - CGRectGetHeight(textRect)) / 2);
+        }
+        _textContainer.size = rect.size;
         [_layoutManager drawGlyphsForGlyphRange:NSMakeRange(0, _layoutManager.numberOfGlyphs) atPoint:drawPoint];
     }
 }
