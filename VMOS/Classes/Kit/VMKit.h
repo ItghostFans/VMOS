@@ -83,6 +83,7 @@ typedef NSScreen VMScreen;
 //#import <VMOS/VMButton.h> // 不明白为什么这里会导致VMControl无法找到
 #import <VMOS/VMView.h>
 #import <VMOS/VMViewController.h>
+#import <VMOS/VMViewController+AppKit.h>
 #import <VMOS/NSImage+UIKit.h>
 #import <VMOS/NSCollectionView+UIKit.h>
 #import <VMOS/NSCollectionViewLayoutAttributes+UIKit.h>
