@@ -44,23 +44,44 @@
             _annotate = [[VMModelPropertyAnnotate alloc] initWithAttribute:_attributes[@"T"]];
         }
             
+        if (!_setter && !_annotate.isModel && !_annotate.isPrimitive) {
+            _setter = [self.class setterOfModelessProperty:_name];
+        } else
         if (!_setter) {
-            NSString *setName = nil;
-            if (_name.length > 1) {
-                NSString *first = [_name substringWithRange:NSMakeRange(0, 1)].uppercaseString;
-                NSString *last = [_name substringFromIndex:1];
-                setName = [NSString stringWithFormat:@"%@%@", first, last];
-            } else {
-                setName = _name.uppercaseString;
-            }
+            NSString *setName = [self.class setterPropertyName:_name];
             _setter = NSSelectorFromString([NSString stringWithFormat:@"set%@:", setName]);
         }
+        if (!_getter && !_annotate.isModel && !_annotate.isPrimitive) {
+            _getter = [self.class getterOfModelessProperty:_name];
+        } else
         if (!_getter) {
             _getter = NSSelectorFromString(_name);
         }
         free(propertyAttribute);
     }
     return self;
+}
+
++ (NSString *)setterPropertyName:(NSString *)name {
+    NSString *setName = nil;
+    if (name.length > 1) {
+        NSString *first = [name substringWithRange:NSMakeRange(0, 1)].uppercaseString;
+        NSString *last = [name substringFromIndex:1];
+        setName = [NSString stringWithFormat:@"%@%@", first, last];
+    } else {
+        setName = name.uppercaseString;
+    }
+    return setName;
+}
+
++ (SEL)setterOfModelessProperty:(NSString *)property {
+    NSString *setName = [self setterPropertyName:property];
+    return NSSelectorFromString([NSString stringWithFormat:@"vm_set%@Json:", setName]);
+}
+
++ (SEL)getterOfModelessProperty:(NSString *)property {
+    NSString *getName = [self setterPropertyName:property];
+    return NSSelectorFromString([NSString stringWithFormat:@"vm_getJson%@:", getName]);
 }
 
 @end

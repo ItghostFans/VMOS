@@ -15,6 +15,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// NSString/NSNumber/NSArray。
 @property (strong, nonatomic, readonly, nonnull) Class model;
 
+/// 是否基础类型。
+@property (assign, nonatomic, readonly) BOOL isPrimitive;
+
 /// model是否是VMModel类。
 @property (assign, nonatomic, readonly) BOOL isModel;
 

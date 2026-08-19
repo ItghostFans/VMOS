@@ -26,12 +26,13 @@
         [scanner scanUpToCharactersFromSet:[NSCharacterSet characterSetWithCharactersInString:@"\"<"] intoString:&cls];
         _model = NSClassFromString(cls);
         if (_model == NSString.class) {
-            
+            _isPrimitive = YES;
         } else
         if (_model == NSNumber.class) {
-            
+            _isPrimitive = YES;
         } else
         if (_model == NSArray.class) {
+            _isPrimitive = YES;
             _elementLevel += 1;
             NSString *elementCls = nil;
             NSMutableArray<__kindof NSString *> *models = NSMutableArray.new;
@@ -51,7 +52,8 @@
                     }
                     if (elementModel == NSString.class ||
                         elementModel == NSNumber.class ||
-                        [VMModel isModel:elementModel]) {
+                        [VMModel isModel:elementModel] ||
+                        [elementModel conformsToProtocol:@protocol(VMModel)]) {
                         [elementModels addObject:elementModel];
                     }
                 }
@@ -68,8 +70,8 @@
 #endif // #ifdef DEBUG
             }
         } else {
+            /// 这里可以不用是模型，如果不是模型的话，Getter和Setter需要特殊处理。
             _isModel = [VMModel isModel:_model];
-            NSAssert(_isModel, @"Check!");
         }
     }
     return self;

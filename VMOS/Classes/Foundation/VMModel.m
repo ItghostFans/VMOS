@@ -64,7 +64,8 @@
 + (void)dictionaryWithModel:(VMModel *)model
                       queue:(dispatch_queue_t _Nullable)queue
                    callback:(void(^ _Nonnull)(NSDictionary * _Nullable dictionary, NSError * _Nullable error))callback {
-    [self propertiesOfModel:model.class queue:dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0) callback:^(Class  _Nonnull __unsafe_unretained modelClass, NSArray<__kindof VMModelProperty *> * _Nullable properties) {        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+    [self propertiesOfModel:model.class queue:dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0) callback:^(Class  _Nonnull __unsafe_unretained modelClass, NSArray<__kindof VMModelProperty *> * _Nullable properties) {
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
             NSDictionary *dictionary = model.dictionary;
             dispatch_async(queue ? : dispatch_get_main_queue(), ^{
                 callback(dictionary, nil);
@@ -86,6 +87,46 @@
             callback(array);
         });
     });
+}
+
+#pragma mark - Json
+
++ (void)dataWithModel:(VMModel *)model
+                queue:(dispatch_queue_t _Nullable)queue
+             callback:(void(^ _Nonnull)(NSData * _Nullable data, NSError * _Nullable error))callback {
+    [self propertiesOfModel:model.class queue:dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0) callback:^(Class  _Nonnull __unsafe_unretained modelClass, NSArray<__kindof VMModelProperty *> * _Nullable properties) {
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+            NSDictionary *dictionary = model.dictionary;
+            NSError *error = nil;
+            NSData *data = nil;
+            @try {
+                data = [NSJSONSerialization dataWithJSONObject:dictionary options:(0) error:&error];
+            } @catch (NSException *exception) {
+            } @finally {
+            }
+            dispatch_async(queue ? : dispatch_get_main_queue(), ^{
+                callback(data, error);
+            });
+        });
+    }];
+}
+
++ (void)jsonWithModel:(VMModel *)model
+             encoding:(NSStringEncoding)encoding
+                queue:(dispatch_queue_t _Nullable)queue
+             callback:(void(^ _Nonnull)(NSString * _Nullable json, NSError * _Nullable error))callback {
+    [self dataWithModel:model queue:dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0) callback:^(NSData * _Nullable data, NSError * _Nullable error) {
+        if (error) {
+            dispatch_async(queue ? : dispatch_get_main_queue(), ^{
+                callback(nil, error);
+            });
+            return;
+        }
+        NSString *json = [[NSString alloc] initWithData:data encoding:encoding];
+        dispatch_async(queue ? : dispatch_get_main_queue(), ^{
+            callback(json, error);
+        });
+    }];
 }
 
 #pragma mark - Core
@@ -158,6 +199,14 @@
                     [VMModel propertiesOfModel:property.annotate.elementModel queue:dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0) callback:^(Class  _Nonnull __unsafe_unretained model, NSArray<__kindof VMModelProperty *> * _Nullable properties) {
                         dispatch_group_leave(group);
                     }];
+                    if ([property.annotate.elementModel respondsToSelector:@selector(subclasses)]) {
+                        for (Class elementClass in [property.annotate.elementModel subclasses]) {
+                            dispatch_group_enter(group);
+                            [VMModel propertiesOfModel:elementClass queue:dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0) callback:^(Class  _Nonnull __unsafe_unretained model, NSArray<__kindof VMModelProperty *> * _Nullable properties) {
+                                dispatch_group_leave(group);
+                            }];
+                        }
+                    }
                 }
             }
             dispatch_group_notify(group, queue ? : dispatch_get_main_queue(), ^{
@@ -397,6 +446,10 @@
         VMModelProperty *modelProperty = [[VMModelProperty alloc] initWithProperty:property[index]];
         if (modelProperty.readonly) {
             continue;
+        }
+        if (modelProperty.annotate.isModel) {
+            NSAssert([model instancesRespondToSelector:modelProperty.setter], @"Check!");
+            NSAssert([model instancesRespondToSelector:modelProperty.getter], @"Check!");
         }
         [properties addObject:modelProperty];
     }

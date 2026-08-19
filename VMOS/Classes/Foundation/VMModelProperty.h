@@ -13,6 +13,12 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+#define VM_MODEL_SETTER(Property, jsonType) \
+- (void)vm_set##Property##Json:(jsonType *)json
+
+#define VM_MODEL_GETTER(Property, jsonType) \
+- (jsonType *)vm_getJson##Property
+
 @protocol VMMPNumber <NSObject>
 @end
 
@@ -79,6 +85,14 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)init NS_UNAVAILABLE;
 + (instancetype)new NS_UNAVAILABLE;
+
+/// 获取非VMModel的Setter。
+/// - Parameter property: 属性名字。
++ (SEL)setterOfModelessProperty:(NSString *)property;
+
+/// 获取非VMModel的Getter。
+/// - Parameter property: 属性名字。
++ (SEL)getterOfModelessProperty:(NSString *)property;
 
 @end
 

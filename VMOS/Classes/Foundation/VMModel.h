@@ -19,12 +19,25 @@ typedef NS_ENUM(NSInteger, VMMError) {
     VMMErrorInvalidJson = 1,    /// 无效的json串。
 };
 
+/// 只要VMModel作为了数组元素，他的子孙后代就必须要注册进来。
+@protocol VMElement <NSObject>
+
+@optional
+
+/// 定义这个元素的所有子类，因为要用来注册属性，进行异步解析。
++ (NSMutableArray *)subclasses;
+
+///// 将当前类注册进subclasses中。
+///// - Parameter cls: 元素类。
+//+ (void)registerClass:(Class)cls;
+
+@end
 
 /// 如果Property实现VMModel协议，那就需要实现Model转换方法。
 /// - Note:
-/// - (property type)vm_propertyModelJson:(id)json
-/// - (id)vm_propertyJsonModel:(id)model
-@protocol VMModel <NSObject>
+/// - (void)vm_set{property}Json:(id)json
+/// - (id)vm_getJson{property}
+@protocol VMModel <VMElement>
 @end
 
 @interface NSObject (VMModel) <VMModel>
@@ -93,8 +106,30 @@ typedef NS_ENUM(NSInteger, VMMError) {
 ///   - queue: （Option）派发的队列。为空则在主线程回调callback。
 ///   - callback: 回调Dictionarys。
 + (void)arrayWithModels:(NSArray<__kindof VMModel *> * _Nonnull)models
-                queue:(dispatch_queue_t _Nullable)queue
+                  queue:(dispatch_queue_t _Nullable)queue
                callback:(void(^ _Nonnull)(NSArray<__kindof NSDictionary *> * _Nullable model))callback;
+
+#pragma mark - Json
+
+/// 将Model转json 数据。
+/// - Parameters:
+///   - model: VMModel
+///   - queue: （Option）派发的队列。为空则在主线程回调callback。
+///   - callback: 回调NSData。
++ (void)dataWithModel:(VMModel *)model
+                queue:(dispatch_queue_t _Nullable)queue
+             callback:(void(^ _Nonnull)(NSData * _Nullable data, NSError * _Nullable error))callback;
+
+/// 将Model转json 字符串。
+/// - Parameters:
+///   - model: VMModel
+///   - encoding: 使用的编码。
+///   - queue: （Option）派发的队列。为空则在主线程回调callback。
+///   - callback: 回调NSString。
++ (void)jsonWithModel:(VMModel *)model
+             encoding:(NSStringEncoding)encoding
+                queue:(dispatch_queue_t _Nullable)queue
+             callback:(void(^ _Nonnull)(NSString * _Nullable json, NSError * _Nullable error))callback;
 
 #pragma mark - Core
 
