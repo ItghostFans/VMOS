@@ -36,9 +36,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
+/// alphaHex: 0xRRGGBBAA。
 #define VM_COLOR_ALPHA_HEX(alphaHex)            [VMColor colorWithAlphaHex:alphaHex]
+/// hex: 0xRRGGBB。
 #define VM_COLOR_HEX(hex)                       [VMColor colorWithHex:hex]
+/// alphaHexText: #RRGGBBAA。
 #define VM_COLOR_ALPHA_HEX_TEXT(alphaHexText)   [VMColor colorWithAlphaHexText:alphaHexText]
+/// hexText: #RRGGBB。
 #define VM_COLOR_HEX_TEXT(hexText)              [VMColor colorWithHexText:hexText]
 
 NS_ASSUME_NONNULL_END

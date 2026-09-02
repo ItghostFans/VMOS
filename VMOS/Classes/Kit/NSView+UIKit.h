@@ -15,8 +15,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface NSView (UIKit)
 
-@property (strong, nonatomic) VMColor *backgroundColor;
+@property (strong, nonatomic, nullable) VMColor *backgroundColor;
 @property (assign, nonatomic) BOOL userInteractionEnabled;
+@property (assign, nonatomic) VMViewContentMode contentMode;
 
 - (void)setNeedsDisplay;
 - (void)setNeedsLayout;

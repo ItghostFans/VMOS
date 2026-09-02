@@ -84,9 +84,9 @@
     self.layer.backgroundColor = backgroundColor.CGColor;
 }
 
-- (VMColor *)backgroundColor {
+- (nullable VMColor *)backgroundColor {
     CGColorRef backgroundColor = self.layer.backgroundColor;
-    if (!backgroundColor) {
+    if (NULL == backgroundColor) {
         return nil;
     }
     return [VMColor colorWithCGColor:self.layer.backgroundColor];
@@ -98,10 +98,18 @@
 
 - (BOOL)userInteractionEnabled {
     NSNumber *userInteractionEnabled = objc_getAssociatedObject(self, @selector(userInteractionEnabled));
-    if (!userInteractionEnabled) {
+    if (nil == userInteractionEnabled) {
         return YES;
     }
     return userInteractionEnabled.boolValue;
+}
+
+- (void)setContentMode:(VMViewContentMode)contentMode {
+    self.layerContentsPlacement = (NSViewLayerContentsPlacement)contentMode;
+}
+
+- (VMViewContentMode)contentMode {
+    return (VMViewContentMode)self.layerContentsPlacement;
 }
 
 @end

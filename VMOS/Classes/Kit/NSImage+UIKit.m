@@ -30,4 +30,17 @@
 
 @end
 
+NSData * __nullable VMImagePNGRepresentation(VMImage * __nonnull image) {
+    NSBitmapImageRep *imageRep = [NSBitmapImageRep imageRepWithData:image.TIFFRepresentation];
+    return [imageRep representationUsingType:NSBitmapImageFileTypePNG properties:@{}];
+}
+
+NSData * __nullable VMImageJPEGRepresentation(VMImage * __nonnull image, CGFloat compressionQuality) {
+    NSBitmapImageRep *imageRep = [NSBitmapImageRep imageRepWithData:image.TIFFRepresentation];
+    return [imageRep representationUsingType:NSBitmapImageFileTypeJPEG properties:@{
+        NSImageCompressionFactor: @(compressionQuality),
+    }];
+}
+
+
 #endif // #if TARGET_OS_IPHONE

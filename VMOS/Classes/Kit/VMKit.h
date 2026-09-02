@@ -18,6 +18,8 @@
 typedef UIColor VMColor;
 typedef UIBezierPath VMBezierPath;
 typedef UIImage VMImage;
+#define VMImageJPEGRepresentation UIImageJPEGRepresentation
+#define VMImagePNGRepresentation UIImagePNGRepresentation
 #define VMFontWeight UIFontWeight
 #define VMFontWeightUltraLight UIFontWeightUltraLight
 #define VMFontWeightThin UIFontWeightThin
@@ -44,10 +46,28 @@ typedef UIImage VMImage;
 typedef UIFont VMFont;
 typedef UIImageView VMImageView;
 typedef UIScreen VMScreen;
+
+#define VMViewContentMode UIViewContentMode
+#define VMViewContentModeScaleToFill UIViewContentModeScaleToFill
+#define VMViewContentModeScaleAspectFit UIViewContentModeScaleAspectFit
+#define VMViewContentModeScaleAspectFill UIViewContentModeScaleAspectFill
+#define VMViewContentModeRedraw UIViewContentModeRedraw
+#define VMViewContentModeCenter UIViewContentModeCenter
+#define VMViewContentModeTop UIViewContentModeTop
+#define VMViewContentModeBottom UIViewContentModeBottom
+#define VMViewContentModeLeft UIViewContentModeLeft
+#define VMViewContentModeRight UIViewContentModeRight
+#define VMViewContentModeTopLeft UIViewContentModeTopLeft
+#define VMViewContentModeTopRight UIViewContentModeTopRight
+#define VMViewContentModeBottomLeft UIViewContentModeBottomLeft
+#define VMViewContentModeBottomRight UIViewContentModeBottomRight
+
 #elif TARGET_OS_MAC
 typedef NSColor VMColor;
 typedef NSBezierPath VMBezierPath;
 typedef NSImage VMImage;
+extern NSData * __nullable VMImagePNGRepresentation(VMImage * __nonnull image);
+extern NSData * __nullable VMImageJPEGRepresentation(VMImage * __nonnull image, CGFloat compressionQuality);
 #define VMFontWeight NSFontWeight
 #define VMFontWeightUltraLight NSFontWeightUltraLight
 #define VMFontWeightThin NSFontWeightThin
@@ -72,6 +92,23 @@ typedef NSImage VMImage;
 typedef NSFont VMFont;
 typedef NSImageView VMImageView;
 typedef NSScreen VMScreen;
+
+typedef NS_ENUM(NSInteger, VMViewContentMode) {
+    VMViewContentModeScaleToFill = NSViewLayerContentsPlacementScaleAxesIndependently,
+    VMViewContentModeScaleAspectFit = NSViewLayerContentsPlacementScaleProportionallyToFit,      // contents scaled to fit with fixed aspect. remainder is transparent
+    VMViewContentModeScaleAspectFill = NSViewLayerContentsPlacementScaleProportionallyToFill,     // contents scaled to fill with fixed aspect. some portion of content may be clipped.
+    VMViewContentModeRedraw,              // redraw on bounds change (calls -setNeedsDisplay)
+    VMViewContentModeCenter = NSViewLayerContentsPlacementCenter,              // contents remain same size. positioned adjusted.
+    VMViewContentModeTop = NSViewLayerContentsPlacementTop,
+    VMViewContentModeBottom = NSViewLayerContentsPlacementBottom,
+    VMViewContentModeLeft = NSViewLayerContentsPlacementLeft,
+    VMViewContentModeRight = NSViewLayerContentsPlacementRight,
+    VMViewContentModeTopLeft = NSViewLayerContentsPlacementTopLeft,
+    VMViewContentModeTopRight = NSViewLayerContentsPlacementTopRight,
+    VMViewContentModeBottomLeft = NSViewLayerContentsPlacementBottomLeft,
+    VMViewContentModeBottomRight = NSViewLayerContentsPlacementBottomRight,
+};
+
 #endif // #if TARGET_OS_IPHONE
 
 #import <VMOS/NSScreen+UIKit.h>

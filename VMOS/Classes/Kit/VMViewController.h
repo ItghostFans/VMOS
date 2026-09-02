@@ -19,6 +19,8 @@ NS_ASSUME_NONNULL_BEGIN
 @interface VMViewController : NSViewController
 #endif // #if TARGET_OS_IPHONE
 
+@property (assign, nonatomic, readonly) CGFloat titleBarHeight API_AVAILABLE(macos(12.0));
+
 @end
 
 NS_ASSUME_NONNULL_END
