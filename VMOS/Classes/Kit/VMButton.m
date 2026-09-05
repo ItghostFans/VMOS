@@ -426,6 +426,8 @@
     
     [self backgroundImageOfState:state];
     [self invalidateIntrinsicContentSize];
+    [self setNeedsLayout];
+    [self layoutIfNeeded];
 }
 
 #pragma mark - Getter
