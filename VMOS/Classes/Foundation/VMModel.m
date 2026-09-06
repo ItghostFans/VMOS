@@ -77,19 +77,25 @@
             });
             return;
         }
-        NSMutableArray *models = [NSMutableArray arrayWithCapacity:dictionaries.count];
         dispatch_queue_t queue = dispatch_queue_create("VMModels queue", DISPATCH_QUEUE_SERIAL);
-        for (NSDictionary *dictionary in dictionaries) {
+        NSMutableDictionary *indexModels = [NSMutableDictionary dictionaryWithCapacity:dictionaries.count];
+        [dictionaries enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            NSDictionary *dictionary = obj;
             [self modelWithDictinary:dictionary queue:queue callback:^(VMModel * _Nullable model, NSError * _Nullable error) {
                 NSAssert(!error, @"Check %@!", dictionaries);
-                [models addObject:model];
-                if (models.count == dictionaries.count) {
+                indexModels[@(idx)] = model;
+                if (indexModels.count == dictionaries.count) {
+                    NSMutableArray *models = [NSMutableArray arrayWithCapacity:dictionaries.count];
+                    for (NSUInteger index = 0; index < indexModels.count; ++index) {
+                        VMModel *model = indexModels[@(index)];
+                        [models addObject:model];
+                    }
                     dispatch_async(queue ? : dispatch_get_main_queue(), ^{
                         callback(models, nil);
                     });
                 }
             }];
-        }
+        }];
     }];
 }
 
