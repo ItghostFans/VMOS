@@ -53,7 +53,34 @@
     CGFloat blue = 0.0f;
     CGFloat green = 0.0f;
     CGFloat red = 0.0f;
-    [self getRed:&red green:&green blue:&blue alpha:&alpha];
+    size_t count = CGColorGetNumberOfComponents(self.CGColor);
+    const CGFloat *colors = CGColorGetComponents(self.CGColor);
+    
+    switch (count) {
+        case 4: {
+            red = colors[0];
+            green = colors[1];
+            blue = colors[2];
+            alpha = colors[3];
+            break;
+        }
+        case 2: {
+            alpha = colors[1];
+            red = colors[0];
+            green = colors[0];
+            blue = colors[0];
+            break;
+        }
+        default: {
+            red = 0.0f;
+            green = 0.0f;
+            blue = 0.0f;
+            alpha = 1.0f;
+            break;
+        }
+    }
+    
+//    [self getRed:&red green:&green blue:&blue alpha:&alpha];
     return [NSString stringWithFormat:@"#%02X%02X%02X%02X",
      (uint8_t)(red * 255.0f),
      (uint8_t)(green * 255.0f),
