@@ -81,7 +81,7 @@
 
 + (SEL)getterOfModelessProperty:(NSString *)property {
     NSString *getName = [self setterPropertyName:property];
-    return NSSelectorFromString([NSString stringWithFormat:@"vm_getJson%@:", getName]);
+    return NSSelectorFromString([NSString stringWithFormat:@"vm_getJson%@", getName]);
 }
 
 @end

@@ -48,6 +48,51 @@
     }];
 }
 
++ (void)modelsWithJson:(NSString * _Nonnull)json
+                 queue:(dispatch_queue_t _Nullable)queue
+              callback:(void(^ _Nonnull)(NSArray<__kindof VMModel *> * _Nullable models, NSError * _Nullable error))callback {
+    [self modelsWithData:[json dataUsingEncoding:NSUTF8StringEncoding] queue:queue callback:callback];
+}
+
++ (void)modelsWithData:(NSData * _Nonnull)data
+                 queue:(dispatch_queue_t _Nullable)queue
+              callback:(void(^ _Nonnull)(NSArray<__kindof VMModel *> * _Nullable models, NSError * _Nullable error))callback {
+    [self propertiesOfModel:self queue:dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0) callback:^(Class  _Nonnull __unsafe_unretained model, NSArray<__kindof VMModelProperty *> * _Nullable properties) {
+        NSError *error = nil;
+        NSArray *dictionaries = nil;
+        @try {
+            dictionaries = [NSJSONSerialization JSONObjectWithData:data options:(0) error:&error];
+        } @catch (NSException *exception) {
+        } @finally {
+        }
+        if (error) {
+            dispatch_async(queue ? : dispatch_get_main_queue(), ^{
+                callback(nil, error);
+            });
+            return;
+        }
+        if (![dictionaries isKindOfClass:NSArray.class]) {
+            dispatch_async(queue ? : dispatch_get_main_queue(), ^{
+                callback(nil, [NSError errorWithDomain:@"Invalid Data!" code:-1 userInfo:nil]);
+            });
+            return;
+        }
+        NSMutableArray *models = [NSMutableArray arrayWithCapacity:dictionaries.count];
+        dispatch_queue_t queue = dispatch_queue_create("VMModels queue", DISPATCH_QUEUE_SERIAL);
+        for (NSDictionary *dictionary in dictionaries) {
+            [self modelWithDictinary:dictionary queue:queue callback:^(VMModel * _Nullable model, NSError * _Nullable error) {
+                NSAssert(!error, @"Check %@!", dictionaries);
+                [models addObject:model];
+                if (models.count == dictionaries.count) {
+                    dispatch_async(queue ? : dispatch_get_main_queue(), ^{
+                        callback(models, nil);
+                    });
+                }
+            }];
+        }
+    }];
+}
+
 + (void)modelWithDictinary:(NSDictionary * _Nonnull)dictinary
                      queue:(dispatch_queue_t _Nullable)queue
                   callback:(void(^ _Nonnull)(VMModel * _Nullable model, NSError * _Nullable error))callback {
@@ -125,6 +170,38 @@
         NSString *json = [[NSString alloc] initWithData:data encoding:encoding];
         dispatch_async(queue ? : dispatch_get_main_queue(), ^{
             callback(json, error);
+        });
+    }];
+}
+
++ (void)dataWithModels:(NSArray *)models
+                 queue:(dispatch_queue_t _Nullable)queue
+              callback:(void(^ _Nonnull)(NSData * _Nullable data, NSError * _Nullable error))callback {
+    [self arrayWithModels:models queue:queue callback:^(NSArray<__kindof NSDictionary *> * _Nullable model) {
+        NSError *error = nil;
+        NSData *data = nil;
+        @try {
+            data = [NSJSONSerialization dataWithJSONObject:model options:(0) error:&error];
+        } @catch (NSException *exception) {
+        } @finally {
+        }
+        dispatch_async(queue ?: dispatch_get_main_queue(), ^{
+            callback(data, error);
+        });
+    }];
+}
+
++ (void)jsonWithModels:(NSArray *)models
+              encoding:(NSStringEncoding)encoding
+                 queue:(dispatch_queue_t _Nullable)queue
+              callback:(void(^ _Nonnull)(NSString * _Nullable json, NSError * _Nullable error))callback {
+    [self dataWithModels:models queue:dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0) callback:^(NSData * _Nullable data, NSError * _Nullable error) {
+        if (error) {
+            callback(nil, error);
+            return;
+        }
+        dispatch_async(queue, ^{
+            callback([[NSString alloc] initWithData:data encoding:encoding], nil);
         });
     }];
 }
@@ -262,7 +339,13 @@
             }
             return NO;
         } convertModel:^id(VMModelProperty *property, id model) {
-            return [model dictionary];
+            if ([model isKindOfClass:VMModel.class]) {
+                return [model dictionary];
+            }
+    #pragma clang diagnostic push
+    #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+            return [self performSelector:property.getter];
+    #pragma clang diagnostic pop
         }];
     }
     return dictionary;
@@ -335,6 +418,9 @@
     } else
     if (property.annotate.isModel) {
         variable = convertModel(property, value(property));
+    } else {
+        /// 这里肯定是自定义类型。
+        variable = convertModel(property, value(property));
     }
     return variable;
 }
@@ -388,10 +474,17 @@
                 }
                 return NO;
             } convertModel:^id(VMModelProperty *property, id  _Nonnull model) {
-                NSAssert([model isKindOfClass:NSDictionary.class], @"Check!");
-                return [[property.annotate.model alloc] initWithDictionary:model];
+                if([model isKindOfClass:NSDictionary.class]) {
+                    return [[property.annotate.model alloc] initWithDictionary:model];
+                }
+                /// 这里是做<VMModel>转换类型的。
+        #pragma clang diagnostic push
+        #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+                [self performSelector:property.setter withObject:model];
+        #pragma clang diagnostic pop
+                return nil;
             }];
-            if (![variable isKindOfClass:NSNull.class]) {
+            if (variable && ![variable isKindOfClass:NSNull.class]) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
                 [self performSelector:property.setter withObject:variable];
