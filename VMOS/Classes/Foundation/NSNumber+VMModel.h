@@ -29,6 +29,15 @@ NS_ASSUME_NONNULL_BEGIN
                  queue:(dispatch_queue_t _Nullable)queue
               callback:(void(^ _Nonnull)(NSArray<__kindof NSNumber *> * _Nullable models, NSError * _Nullable error))callback;
 
+/// 从url数据初始化Numbers。
+/// - Parameters:
+///   - url: number对象数组存储的url。
+///   - queue: (Option) 派发的队列。为空则在主线程回调callback。
+///   - callback: 回调Models或者Error。
++ (void)modelsWithUrl:(NSURL * _Nonnull)url
+                queue:(dispatch_queue_t _Nullable)queue
+             callback:(void(^ _Nonnull)(NSArray<__kindof NSNumber *> * _Nullable models, NSError * _Nullable error))callback;
+
 /// 将Number数组转json数据。
 /// - Parameters:
 ///   - models: 当前调用的类型数组，务必保证元素跟当前调用类一致。

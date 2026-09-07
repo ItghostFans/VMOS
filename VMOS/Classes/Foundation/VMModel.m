@@ -6,6 +6,7 @@
 //
 
 #import "VMModel.h"
+#import <VMOS/VMModel+Protected.h>
 
 #import <objc/runtime.h>
 
@@ -46,6 +47,22 @@
             callback(object, error);
         });
     }];
+}
+
++ (void)modelWithUrl:(NSURL * _Nonnull)url
+               queue:(dispatch_queue_t _Nullable)queue
+            callback:(void(^ _Nonnull)(VMModel * _Nullable model, NSError * _Nullable error))callback {
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+        NSError *error = nil;
+        NSData *data = [NSData dataWithContentsOfURL:url options:(NSDataReadingMappedIfSafe) error:&error];
+        if (error) {
+            dispatch_async(queue ? : dispatch_get_main_queue(), ^{
+                callback(nil, error);
+            });
+            return;
+        }
+        [self modelWithData:data queue:queue callback:callback];
+    });
 }
 
 + (void)modelsWithJson:(NSString * _Nonnull)json
@@ -99,6 +116,22 @@
     }];
 }
 
++ (void)modelsWithUrl:(NSURL * _Nonnull)url
+                queue:(dispatch_queue_t _Nullable)queue
+             callback:(void(^ _Nonnull)(NSArray<__kindof VMModel *> * _Nullable models, NSError * _Nullable error))callback {
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+        NSError *error = nil;
+        NSData *data = [NSData dataWithContentsOfURL:url options:(NSDataReadingMappedIfSafe) error:&error];
+        if (error) {
+            dispatch_async(queue ? : dispatch_get_main_queue(), ^{
+                callback(nil, error);
+            });
+            return;
+        }
+        [self modelsWithData:data queue:queue callback:callback];
+    });
+}
+
 + (void)modelWithDictinary:(NSDictionary * _Nonnull)dictinary
                      queue:(dispatch_queue_t _Nullable)queue
                   callback:(void(^ _Nonnull)(VMModel * _Nullable model, NSError * _Nullable error))callback {
@@ -116,11 +149,9 @@
                       queue:(dispatch_queue_t _Nullable)queue
                    callback:(void(^ _Nonnull)(NSDictionary * _Nullable dictionary, NSError * _Nullable error))callback {
     [self propertiesOfModel:model.class queue:dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0) callback:^(Class  _Nonnull __unsafe_unretained modelClass, NSArray<__kindof VMModelProperty *> * _Nullable properties) {
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-            NSDictionary *dictionary = model.dictionary;
-            dispatch_async(queue ? : dispatch_get_main_queue(), ^{
-                callback(dictionary, nil);
-            });
+        NSDictionary *dictionary = model.dictionary;
+        dispatch_async(queue ? : dispatch_get_main_queue(), ^{
+            callback(dictionary, nil);
         });
     }];
 }
@@ -146,18 +177,16 @@
                 queue:(dispatch_queue_t _Nullable)queue
              callback:(void(^ _Nonnull)(NSData * _Nullable data, NSError * _Nullable error))callback {
     [self propertiesOfModel:model.class queue:dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0) callback:^(Class  _Nonnull __unsafe_unretained modelClass, NSArray<__kindof VMModelProperty *> * _Nullable properties) {
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-            NSDictionary *dictionary = model.dictionary;
-            NSError *error = nil;
-            NSData *data = nil;
-            @try {
-                data = [NSJSONSerialization dataWithJSONObject:dictionary options:(0) error:&error];
-            } @catch (NSException *exception) {
-            } @finally {
-            }
-            dispatch_async(queue ? : dispatch_get_main_queue(), ^{
-                callback(data, error);
-            });
+        NSDictionary *dictionary = model.dictionary;
+        NSError *error = nil;
+        NSData *data = nil;
+        @try {
+            data = [NSJSONSerialization dataWithJSONObject:dictionary options:(0) error:&error];
+        } @catch (NSException *exception) {
+        } @finally {
+        }
+        dispatch_async(queue ? : dispatch_get_main_queue(), ^{
+            callback(data, error);
         });
     }];
 }
@@ -475,7 +504,11 @@
             } convertElement:^BOOL(VMModelProperty *property, __autoreleasing id * _Nonnull element) {
                 /// json数组如： "[[[{}, {}],[{}, {}]],[[{}, {}],[{}, {}]]]"
                 if ([*element isKindOfClass:NSDictionary.class]) {
-                    *element = [[property.annotate.elementModel alloc] initWithDictionary:*element];
+                    if ([property.annotate.elementModel instancesRespondToSelector:@selector(initWithElementDictionary:)]) {
+                        *element = [[property.annotate.elementModel alloc] initWithElementDictionary:*element];
+                    } else {
+                        *element = [[property.annotate.elementModel alloc] initWithDictionary:*element];
+                    }
                     return YES;
                 }
                 return NO;

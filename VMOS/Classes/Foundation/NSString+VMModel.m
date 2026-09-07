@@ -38,6 +38,22 @@
     });
 }
 
++ (void)modelsWithUrl:(NSURL * _Nonnull)url
+                queue:(dispatch_queue_t _Nullable)queue
+             callback:(void(^ _Nonnull)(NSArray<__kindof NSString *> * _Nullable models, NSError * _Nullable error))callback {
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+        NSError *error = nil;
+        NSData *data = [NSData dataWithContentsOfURL:url options:(NSDataReadingMappedIfSafe) error:&error];
+        if (error) {
+            dispatch_async(queue ? : dispatch_get_main_queue(), ^{
+                callback(nil, error);
+            });
+            return;
+        }
+        [self modelsWithData:data queue:queue callback:callback];
+    });
+}
+
 + (void)dataWithModels:(NSArray *)models
                  queue:(dispatch_queue_t _Nullable)queue
               callback:(void(^ _Nonnull)(NSData * _Nullable data, NSError * _Nullable error))callback {

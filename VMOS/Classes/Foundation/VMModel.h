@@ -24,6 +24,10 @@ typedef NS_ENUM(NSInteger, VMMError) {
 
 @optional
 
+/// 用这个来初始化数组元素，这样就可以通过工厂初始化实际的元素对象。
+/// - Parameter dictionary: 元素的Json Dictionary。
+- (instancetype)initWithElementDictionary:(NSDictionary *)dictionary;
+
 /// 定义这个元素的所有子类，因为要用来注册属性，进行异步解析。
 + (NSMutableArray *)subclasses;
 
@@ -79,6 +83,16 @@ typedef NS_ENUM(NSInteger, VMMError) {
                 queue:(dispatch_queue_t _Nullable)queue
              callback:(void(^ _Nonnull)(VMModel * _Nullable model, NSError * _Nullable error))callback;
 
+/// 从url数据初始化Model。
+/// - Note: 这里要注意，是VMModel的子类来调用。
+/// - Parameters:
+///   - url: json对象存储的url。
+///   - queue: (Option) 派发的队列。为空则在主线程回调callback。
+///   - callback: 回调Model或者Error。
++ (void)modelWithUrl:(NSURL * _Nonnull)url
+               queue:(dispatch_queue_t _Nullable)queue
+            callback:(void(^ _Nonnull)(VMModel * _Nullable model, NSError * _Nullable error))callback;
+
 /// 从Json字符串初始化Models。
 /// - Note: 这里要注意，是VMModel的子类来调用。
 /// - Parameters:
@@ -98,6 +112,16 @@ typedef NS_ENUM(NSInteger, VMMError) {
 + (void)modelsWithData:(NSData * _Nonnull)data
                  queue:(dispatch_queue_t _Nullable)queue
               callback:(void(^ _Nonnull)(NSArray<__kindof VMModel *> * _Nullable models, NSError * _Nullable error))callback;
+
+/// 从url数据初始化Models。
+/// - Note: 这里要注意，是VMModel的子类来调用。
+/// - Parameters:
+///   - url: json对象数组存储的url。
+///   - queue: (Option) 派发的队列。为空则在主线程回调callback。
+///   - callback: 回调Models或者Error。
++ (void)modelsWithUrl:(NSURL * _Nonnull)url
+                queue:(dispatch_queue_t _Nullable)queue
+             callback:(void(^ _Nonnull)(NSArray<__kindof VMModel *> * _Nullable models, NSError * _Nullable error))callback;
 
 /// 从Dictionary初始化Model。
 /// - Note: 这里要注意，是VMModel的子类来调用。
