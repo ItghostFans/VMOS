@@ -26,7 +26,7 @@
 }
 
 - (NSString *)description {
-    return [NSString stringWithFormat:@"(VMLabel *)%p {text: %@, frame: %@, bounds: %@, intrinsicContentSize: %@}", self.textStorage.string, self, NSStringFromRect(self.frame), NSStringFromRect(self.bounds), NSStringFromSize(self.intrinsicContentSize)];
+    return [NSString stringWithFormat:@"(VMLabel *)%p {text: %@, frame: %@, bounds: %@, intrinsicContentSize: %@}", self.textStorage.string, self, NSStringFromCGRect(self.frame), NSStringFromCGRect(self.bounds), NSStringFromCGSize(self.intrinsicContentSize)];
 }
 
 - (void)setNeedsDisplay {
@@ -153,7 +153,7 @@
 - (CGSize)intrinsicContentSize {
     _textContainer.size = CGSizeZero;
     CGRect textRect = [_layoutManager boundingRectForGlyphRange:NSMakeRange(0, _layoutManager.numberOfGlyphs) inTextContainer:_textContainer];
-    NSLog(@"%@ %@", _textStorage.string, NSStringFromRect(textRect));
+    NSLog(@"%@ %@", _textStorage.string, NSStringFromCGRect(textRect));
     return CGSizeMake(ceil(textRect.size.width), ceil(textRect.size.height));
 }
 

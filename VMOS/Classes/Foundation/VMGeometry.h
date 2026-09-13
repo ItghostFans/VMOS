@@ -63,6 +63,9 @@ extern NSString * NSStringFromCGRect(CGRect frame);
 /// - Parameter string: CGRect的字符串格式。
 extern CGRect CGRectFromString(NSString *string);
 
+#define NSStringFromCGRect NSStringFromRect
+#define NSStringFromCGSize NSStringFromSize
+
 #endif // #if TARGET_OS_IPHONE
 
 #endif /* VMGeometry_h */
