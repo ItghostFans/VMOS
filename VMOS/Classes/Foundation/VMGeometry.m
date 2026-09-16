@@ -31,6 +31,14 @@ NSString * NSStringFromCGRect(CGRect frame) {
     return NSStringFromRect(frame);
 }
 
+NSString * NSStringFromCGSize(CGSize size) {
+    return NSStringFromSize(size);
+}
+
+NSString * NSStringFromCGPoint(CGPoint point) {
+    return NSStringFromPoint(point);
+}
+
 CGRect CGRectFromString(NSString *string) {
     return NSRectFromString(string);
 }

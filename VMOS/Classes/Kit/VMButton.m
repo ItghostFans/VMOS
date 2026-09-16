@@ -174,31 +174,34 @@
 
 - (void)setSelected:(BOOL)selected {
     _selected = selected;
-    if (_selected) {
-        _state |= VMControlStateSelected;
-    } else {
-        _state &= ~VMControlStateNormal;
-    }
+//    if (_selected) {
+//        _state |= VMControlStateSelected;
+//    } else {
+//        _state &= ~VMControlStateSelected;
+//    }
+    _state = selected ? VMControlStateSelected : ~VMControlStateSelected;
     [self updateState:_state];
 }
 
 - (void)setEnabled:(BOOL)enabled {
     [super setEnabled:enabled];
-    if (enabled) {
-        _state &= ~VMControlStateDisabled;
-    } else {
-        _state |= VMControlStateDisabled;
-    }
+//    if (enabled) {
+//        _state &= ~VMControlStateDisabled;
+//    } else {
+//        _state |= VMControlStateDisabled;
+//    }
+    _state = enabled ? ~VMControlStateDisabled : VMControlStateDisabled;
     [self updateState:_state];
 }
 
 - (void)setHighlighted:(BOOL)highlighted {
     [super setHighlighted:highlighted];
-    if (highlighted) {
-        _state |= VMControlStateHighlighted;
-    } else {
-        _state &= ~VMControlStateHighlighted;
-    }
+//    if (highlighted) {
+//        _state |= VMControlStateHighlighted;
+//    } else {
+//        _state &= ~VMControlStateHighlighted;
+//    }
+    _state = highlighted ? VMControlStateHighlighted : ~VMControlStateHighlighted;
     [self updateState:_state];
 }
 

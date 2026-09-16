@@ -43,7 +43,10 @@
 
 - (NSView *)uikit_hitTest:(NSPoint)point {
     if (self.userInteractionEnabled) {
-        return [self uikit_hitTest:point];
+        NSView *view = [self uikit_hitTest:point];
+        if (view.userInteractionEnabled) {
+            return view;
+        }
     }
     return nil;
 }
@@ -52,7 +55,11 @@
     if (!self.userInteractionEnabled) {
         return;
     }
-    [self uikit_mouseDown:event];
+    if ([self respondsToSelector:@selector(uikit_mouseDown:)]) {
+        [self uikit_mouseDown:event];
+        return;
+    }
+    [self mouseDown:event];
 }
 
 #pragma mark - Public

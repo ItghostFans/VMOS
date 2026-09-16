@@ -60,11 +60,16 @@ extern CGRect CGRectFromObject(NSDictionary *object);
 extern NSString * NSStringFromCGRect(CGRect frame);
 
 /// 兼容iOS
+/// - Parameter size: Size尺寸。
+extern NSString * NSStringFromCGSize(CGSize size);
+
+/// 兼容iOS
+/// - Parameter point: Point坐标。
+extern NSString * NSStringFromCGPoint(CGPoint point);
+
+/// 兼容iOS
 /// - Parameter string: CGRect的字符串格式。
 extern CGRect CGRectFromString(NSString *string);
-
-#define NSStringFromCGRect NSStringFromRect
-#define NSStringFromCGSize NSStringFromSize
 
 #endif // #if TARGET_OS_IPHONE
 
