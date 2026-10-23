@@ -19,12 +19,19 @@ NS_ASSUME_NONNULL_BEGIN
 @property (assign, nonatomic) BOOL userInteractionEnabled;
 @property (assign, nonatomic) VMViewContentMode contentMode;
 
+- (NSViewController *)controller;
+
 - (void)setNeedsDisplay;
 - (void)setNeedsLayout;
 - (void)layoutSubviews;
 - (void)layoutIfNeeded;
 
 - (void)insertSubview:(NSView *)view atIndex:(NSInteger)index;
+
+- (void)willMoveToSuperview:(nullable NSView *)newSuperview;
+- (void)didMoveToSuperview;
+- (void)willMoveToWindow:(nullable NSWindow *)newWindow;
+- (void)didMoveToWindow;
 
 @end
 

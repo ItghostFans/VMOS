@@ -23,6 +23,11 @@
         [self runtime_swizzleSel:@selector(layout) newSel:@selector(uikit_layout) cls:self];
         [self runtime_swizzleSel:@selector(hitTest:) newSel:@selector(uikit_hitTest:) cls:self];
 //        [self runtime_swizzleSel:@selector(mouseDown:) newSel:@selector(uikit_mouseDown:) cls:self];
+        
+        [self runtime_swizzleSel:@selector(viewWillMoveToSuperview:) newSel:@selector(willMoveToSuperview:) cls:self];
+        [self runtime_swizzleSel:@selector(viewDidMoveToSuperview) newSel:@selector(didMoveToSuperview) cls:self];
+        [self runtime_swizzleSel:@selector(viewWillMoveToWindow:) newSel:@selector(willMoveToWindow:) cls:self];
+        [self runtime_swizzleSel:@selector(viewDidMoveToWindow) newSel:@selector(didMoveToWindow) cls:self];
     });
 }
 
@@ -85,6 +90,35 @@
         subview = [self.subviews objectAtIndex:index];
     }
     [self addSubview:view positioned:(NSWindowBelow) relativeTo:subview];
+}
+
+- (void)willMoveToSuperview:(nullable NSView *)newSuperview {
+    [self willMoveToSuperview:newSuperview];
+}
+
+- (void)didMoveToSuperview {
+    [self didMoveToSuperview];
+}
+
+- (void)willMoveToWindow:(nullable NSWindow *)newWindow {
+    [self willMoveToWindow:newWindow];
+}
+
+- (void)didMoveToWindow {
+    [self didMoveToWindow];
+}
+
+- (NSViewController *)controller {
+    NSResponder *responder = self;
+    NSViewController *controller = nil;
+    do {
+        responder = responder.nextResponder;
+        if (!responder || [responder isKindOfClass:NSViewController.class]) {
+            controller = (NSViewController *)responder;
+            break;
+        }
+    } while (YES);
+    return controller;
 }
 
 - (void)setBackgroundColor:(VMColor *)backgroundColor {

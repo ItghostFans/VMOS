@@ -19,6 +19,32 @@ NS_ASSUME_NONNULL_BEGIN
 #define VM_MODEL_GETTER(Property, jsonType) \
 - (jsonType *)vm_getJson##Property
 
+/* Code Snip
+VM_MODEL_SETTER(<#Property#>, NSString) {
+    if (!json) {
+        return;
+    }
+    /// Image。
+//    self.<#property#> = [[VMImage alloc] initWithData:[[NSData alloc] initWithBase64EncodedString:json options:(0)]];
+    /// Color。
+//    self.<#property#> = [SCColor colorWithAlphaHexText:json];
+    /// Frame。
+//    self.<#property#> = [NSValue valueWithCGRect:CGRectFromString(json)];
+}
+
+VM_MODEL_GETTER(<#Property#>, NSString) {
+    if (!self.<#property#>) {
+        return nil;
+    }
+    /// Image。
+//    return [VMImagePNGRepresentation(self.<#property#>) base64EncodedStringWithOptions:(0)];
+    /// Color。
+//    return self.<#property#>.alphaHexText;
+    /// Frame。
+//    return NSStringFromCGRect(self.<#property#>.CGRectValue);
+}
+*/
+
 @protocol VMMPNumber <NSObject>
 @end
 

@@ -65,6 +65,7 @@
     [superview addSubview:scrollView];
     _scrollView = (VMView *)scrollView;
     scrollView.documentView = self;
+    self.backgroundColors = @[[VMColor clearColor]];
 #endif // #if TARGET_OS_IPHONE
 }
 

@@ -6,10 +6,30 @@
 //
 
 #import "VMScrollView.h"
-#if TARGET_OS_IPHONE
-#elif TARGET_OS_MAC
 
 @implementation VMScrollView
+
+- (void)setView:(VMView *)view {
+#if TARGET_OS_IPHONE
+    for (UIView *subview in self.subviews) {
+        [subview removeFromSuperview];
+    }
+    [self addSubview:view];
+#elif TARGET_OS_MAC
+    self.documentView = view;
+#endif // #if TARGET_OS_IPHONE
+}
+
+- (VMView *)view {
+#if TARGET_OS_IPHONE
+    return self.subviews.firstObject;
+#elif TARGET_OS_MAC
+    return self.documentView;
+#endif // #if TARGET_OS_IPHONE
+}
+
+#if TARGET_OS_IPHONE
+#elif TARGET_OS_MAC
 
 - (instancetype)initWithFrame:(CGRect)frame {
     if (self = [super initWithFrame:frame]) {
@@ -50,6 +70,6 @@
     }
 }
 
-@end
-
 #endif // #if TARGET_OS_IPHONE
+
+@end

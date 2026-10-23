@@ -14,6 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
               
 - (VMImage *)snapshot;
 - (CGContextRef)currentContext;
+- (UIViewController *)controller;
 
 @end
 

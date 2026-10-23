@@ -15,6 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface NSScreen (UIKit)
 
 @property (assign, nonatomic, readonly) CGRect bounds;
+@property (assign, nonatomic, readonly) CGFloat scale;
 
 @end
 

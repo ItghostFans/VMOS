@@ -7,15 +7,16 @@
 
 #import <VMOS/VMKit.h>
 
-#if TARGET_OS_IPHONE
-#elif TARGET_OS_MAC
-
 NS_ASSUME_NONNULL_BEGIN
 
+#if TARGET_OS_IPHONE
+@interface VMScrollView : UIScrollView
+#elif TARGET_OS_MAC
 @interface VMScrollView : NSScrollView
+#endif // #if TARGET_OS_IPHONE
+
+@property (weak, nonatomic) VMView *view;
 
 @end
 
 NS_ASSUME_NONNULL_END
-
-#endif // #if TARGET_OS_IPHONE

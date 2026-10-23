@@ -16,6 +16,10 @@
     return self.frame;
 }
 
+- (CGFloat)scale {
+    return self.backingScaleFactor;
+}
+
 @end
 
 #endif // #if TARGET_OS_IPHONE

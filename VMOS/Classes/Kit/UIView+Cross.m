@@ -23,6 +23,18 @@
 - (CGContextRef)currentContext {
     return UIGraphicsGetCurrentContext();
 }
+- (UIViewController *)controller {
+    UIResponder *responder = self;
+    UIViewController *controller = nil;
+    do {
+        responder = responder.nextResponder;
+        if (!responder || [responder isKindOfClass:UIViewController.class]) {
+            controller = (UIViewController *)responder;
+            break;
+        }
+    } while (YES);
+    return controller;
+}
 
 @end
 #elif TARGET_OS_MAC
