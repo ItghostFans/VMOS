@@ -363,7 +363,11 @@
         dictionary[jsonKey] = [self convertProperty:property value:^id(VMModelProperty *property) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
-            return [self performSelector:property.getter];
+            id value = [self performSelector:property.getter];
+            if (property.annotate.isBoolean) {
+                return [value boolValue] ? (id)kCFBooleanTrue : (id)kCFBooleanFalse;
+            }
+            return value;
 #pragma clang diagnostic pop
         } convertElement:^BOOL(VMModelProperty *property, __autoreleasing id *element) {
             /// object数组如： @[[[@{}, @{}],[@{}, @{}]],[[@{}, @{}],[@{}, @{}]]]
@@ -379,7 +383,11 @@
             }
     #pragma clang diagnostic push
     #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
-            return [self performSelector:property.getter];
+            id value = [self performSelector:property.getter];
+            if (property.annotate.isBoolean) {
+                return [value boolValue] ? (id)kCFBooleanTrue : (id)kCFBooleanFalse;
+            }
+            return value;
     #pragma clang diagnostic pop
         }];
     }

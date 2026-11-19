@@ -18,6 +18,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// 是否基础类型。
 @property (assign, nonatomic, readonly) BOOL isPrimitive;
 
+/// 属性/数组元素，是否布尔类型。
+@property (assign, nonatomic, readonly) BOOL isBoolean;
+
 /// model是否是VMModel类。
 @property (assign, nonatomic, readonly) BOOL isModel;
 
