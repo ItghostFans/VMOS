@@ -70,6 +70,31 @@
     }
 }
 
+- (void)scrollWheel:(NSEvent *)event {
+    [super scrollWheel:event];
+    
+    if (self.horizontalScrollElasticity == NSScrollElasticityNone &&
+        self.verticalScrollElasticity == NSScrollElasticityNone) {
+        NSClipView *clipView = self.contentView;
+        NSView *documentView = self.documentView;
+        if (!documentView) {
+            return;
+        }
+        
+        NSRect bounds = clipView.bounds;
+        CGFloat maxX = MAX(0, documentView.frame.size.width - bounds.size.width);
+        CGFloat maxY = MAX(0, documentView.frame.size.height - bounds.size.height);
+        
+        CGFloat x = MAX(0, MIN(bounds.origin.x, maxX));
+        CGFloat y = MAX(0, MIN(bounds.origin.y, maxY));
+        
+        if (x != bounds.origin.x || y != bounds.origin.y) {
+            [clipView setBoundsOrigin:NSMakePoint(x, y)];
+            [self reflectScrolledClipView:clipView];
+        }
+    }
+}
+
 #endif // #if TARGET_OS_IPHONE
 
 @end
