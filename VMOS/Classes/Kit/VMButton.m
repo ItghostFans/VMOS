@@ -12,7 +12,7 @@
 
 @interface VMButton ()
 #if TARGET_OS_IPHONE
-#elif TARGET_OS_MAC
+#elif TARGET_OS_OSX
 @property (strong, nonatomic) VMButtonCell *buttonCell;
 #endif // #if TARGET_OS_IPHONE
 
@@ -158,7 +158,7 @@
     [self updateState:state];
 }
 
-#elif TARGET_OS_MAC
+#elif TARGET_OS_OSX
 
 + (Class)cellClass {
     return VMButtonCell.class;
@@ -378,7 +378,7 @@
 
 #if TARGET_OS_IPHONE
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
-#elif TARGET_OS_MAC
+#elif TARGET_OS_OSX
 - (void)mouseDown:(NSEvent *)event
 #endif // #if TARGET_OS_IPHONE
 {
@@ -389,7 +389,7 @@
 }
 #if TARGET_OS_IPHONE
 - (void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
-#elif TARGET_OS_MAC
+#elif TARGET_OS_OSX
 - (void)mouseUp:(NSEvent *)event
 #endif // #if TARGET_OS_IPHONE
 {
@@ -401,7 +401,7 @@
             break;
         }
     }
-#elif TARGET_OS_MAC
+#elif TARGET_OS_OSX
     point = [self convertPoint:event.locationInWindow fromView:nil];
 #endif // #if TARGET_OS_IPHONE
     NSMutableArray<__kindof NSInvocation *> *actions = [self actionsOfEvent:(CGRectContainsPoint(self.bounds, point) ? VMControlEventTouchUpInside : VMControlEventTouchUpOutside)];

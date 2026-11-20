@@ -7,7 +7,7 @@
 
 #if TARGET_OS_IPHONE
 #import <UIKit/UIKit.h>
-#elif TARGET_OS_MAC
+#elif TARGET_OS_OSX
 #import <AppKit/AppKit.h>
 #endif // #if TARGET_OS_IPHONE
 
@@ -62,7 +62,7 @@ typedef UIScreen VMScreen;
 #define VMViewContentModeBottomLeft UIViewContentModeBottomLeft
 #define VMViewContentModeBottomRight UIViewContentModeBottomRight
 
-#elif TARGET_OS_MAC
+#elif TARGET_OS_OSX
 typedef NSColor VMColor;
 typedef NSBezierPath VMBezierPath;
 typedef NSImage VMImage;

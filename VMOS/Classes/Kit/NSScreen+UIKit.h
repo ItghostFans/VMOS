@@ -8,7 +8,7 @@
 #import <VMOS/VMKit.h>
 
 #if TARGET_OS_IPHONE
-#elif TARGET_OS_MAC
+#elif TARGET_OS_OSX
 
 NS_ASSUME_NONNULL_BEGIN
 

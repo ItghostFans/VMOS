@@ -10,7 +10,7 @@
 @implementation VMCollectionViewCell
 
 #if TARGET_OS_IPHONE
-#elif TARGET_OS_MAC
+#elif TARGET_OS_OSX
 
 - (instancetype)initWithNibName:(NSNibName)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {

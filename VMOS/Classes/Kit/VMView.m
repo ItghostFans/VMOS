@@ -9,7 +9,7 @@
 
 @implementation VMView
 #if TARGET_OS_IPHONE
-#elif TARGET_OS_MAC
+#elif TARGET_OS_OSX
 - (BOOL)isFlipped {
     return YES;
 }
@@ -17,13 +17,13 @@
 
 #if TARGET_OS_IPHONE
 - (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event
-#elif TARGET_OS_MAC
+#elif TARGET_OS_OSX
 - (NSView *)hitTest:(NSPoint)point
 #endif // #if TARGET_OS_IPHONE
 {
 #if TARGET_OS_IPHONE
     UIView *hitView = [super hitTest:point withEvent:event];
-#elif TARGET_OS_MAC
+#elif TARGET_OS_OSX
     NSView *hitView = [super hitTest:point];
 #endif // #if TARGET_OS_IPHONE
     return hitView;

@@ -6,7 +6,7 @@
 //
 
 #if TARGET_OS_IPHONE
-#elif TARGET_OS_MAC
+#elif TARGET_OS_OSX
 #import <AppKit/AppKit.h>
 
 NS_ASSUME_NONNULL_BEGIN

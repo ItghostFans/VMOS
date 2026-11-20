@@ -15,7 +15,7 @@
         [subview removeFromSuperview];
     }
     [self addSubview:view];
-#elif TARGET_OS_MAC
+#elif TARGET_OS_OSX
     self.documentView = view;
 #endif // #if TARGET_OS_IPHONE
 }
@@ -23,13 +23,13 @@
 - (VMView *)view {
 #if TARGET_OS_IPHONE
     return self.subviews.firstObject;
-#elif TARGET_OS_MAC
+#elif TARGET_OS_OSX
     return self.documentView;
 #endif // #if TARGET_OS_IPHONE
 }
 
 #if TARGET_OS_IPHONE
-#elif TARGET_OS_MAC
+#elif TARGET_OS_OSX
 
 - (instancetype)initWithFrame:(CGRect)frame {
     if (self = [super initWithFrame:frame]) {

@@ -29,7 +29,7 @@ typedef NS_ENUM(NSInteger, VMCollectionViewScrollDirection) {
     VMCollectionViewScrollDirectionHorizontal = UICollectionViewScrollDirectionHorizontal,
 };
 
-#elif TARGET_OS_MAC
+#elif TARGET_OS_OSX
 
 typedef NSCollectionViewUpdateItem VMCollectionViewUpdateItem;
 typedef NSCollectionViewLayoutAttributes VMCollectionViewLayoutAttributes;
@@ -57,7 +57,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface VMCollectionView : UICollectionView
 
-#elif TARGET_OS_MAC
+#elif TARGET_OS_OSX
 
 @class VMCollectionReusableView;
 @class VMCollectionViewCell;

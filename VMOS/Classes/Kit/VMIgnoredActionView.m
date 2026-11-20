@@ -15,7 +15,7 @@
 
 #if TARGET_OS_IPHONE
 - (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event
-//#elif TARGET_OS_MAC
+//#elif TARGET_OS_OSX
 //- (NSView *)hitTest:(NSPoint)point
 #endif // #if TARGET_OS_IPHONE
 #if TARGET_OS_IPHONE
@@ -27,7 +27,7 @@
 #endif // #if TARGET_OS_IPHONE
 #if TARGET_OS_IPHONE
     if ([self pointInside:point withEvent:event])
-//#elif TARGET_OS_MAC
+//#elif TARGET_OS_OSX
 //    point = [self convertPoint:point fromView:self];
 //    if (CGRectContainsPoint(self.bounds, point))
 #endif // #if TARGET_OS_IPHONE
@@ -39,7 +39,7 @@
 #if TARGET_OS_IPHONE
             CGPoint subviewPoint = [view convertPoint:point fromView:self];
             hitView = [view hitTest:subviewPoint withEvent:event];
-//#elif TARGET_OS_MAC
+//#elif TARGET_OS_OSX
 //            CGPoint subviewPoint = point;
 //            hitView = [view hitTest:subviewPoint];
 #endif // #if TARGET_OS_IPHONE

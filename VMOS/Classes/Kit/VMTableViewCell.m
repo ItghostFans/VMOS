@@ -17,7 +17,7 @@
     // Configure the view for the selected state
 }
 
-#elif TARGET_OS_MAC
+#elif TARGET_OS_OSX
 
 - (NSView *)contentView {
     return self;

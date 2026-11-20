@@ -15,7 +15,7 @@ typedef NS_ENUM(NSInteger, VMLayoutConstraintAxis) {
 };
 
 @interface VMStackView : UIStackView
-#elif TARGET_OS_MAC
+#elif TARGET_OS_OSX
 typedef NS_ENUM(NSInteger, VMLayoutConstraintAxis) {
     VMLayoutConstraintAxisHorizontal = NSUserInterfaceLayoutOrientationHorizontal,
     VMLayoutConstraintAxisVertical = NSUserInterfaceLayoutOrientationVertical,

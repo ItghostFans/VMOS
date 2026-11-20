@@ -7,7 +7,7 @@
 
 #if TARGET_OS_IPHONE
 #import <UIKit/UIKit.h>
-#elif TARGET_OS_MAC
+#elif TARGET_OS_OSX
 #import <AppKit/AppKit.h>
 #endif // #if TARGET_OS_IPHONE
 
@@ -62,7 +62,7 @@ typedef NS_OPTIONS(NSUInteger, VMControlEvents) {
     VMControlEventAllEvents                                         = UIControlEventAllEvents,
 };
 
-#elif TARGET_OS_MAC
+#elif TARGET_OS_OSX
 
 typedef NS_ENUM(NSUInteger, VMImagePosition) {
     VMImagePositionNoImage        = NSNoImage,

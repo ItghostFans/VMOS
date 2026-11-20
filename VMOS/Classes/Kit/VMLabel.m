@@ -103,7 +103,7 @@
         [self setContentHuggingPriority:(UILayoutPriorityDefaultLow) forAxis:(UILayoutConstraintAxisVertical)];
         [self setContentCompressionResistancePriority:(UILayoutPriorityDefaultHigh) forAxis:(UILayoutConstraintAxisVertical)];
     }
-#elif TARGET_OS_MAC
+#elif TARGET_OS_OSX
     if (numberOfLines == 1) {
         [self setContentHuggingPriority:(NSLayoutPriorityDefaultHigh) forOrientation:(NSLayoutConstraintOrientationVertical)];
         [self setContentCompressionResistancePriority:(NSLayoutPriorityDefaultLow) forOrientation:(NSLayoutConstraintOrientationVertical)];
@@ -296,7 +296,7 @@
             break;
         }
     }
-#elif TARGET_OS_MAC
+#elif TARGET_OS_OSX
     self.font = [VMFont systemFontOfSize:[VMFont systemFontSize]];
     self.textColor = [VMColor controlTextColor];
     self.numberOfLines = 1;

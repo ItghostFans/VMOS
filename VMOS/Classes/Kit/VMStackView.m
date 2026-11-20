@@ -10,7 +10,7 @@
 @implementation VMStackView
 
 #if TARGET_OS_IPHONE
-#elif TARGET_OS_MAC
+#elif TARGET_OS_OSX
 
 - (VMLayoutConstraintAxis)axis {
     return (VMLayoutConstraintAxis)self.orientation;

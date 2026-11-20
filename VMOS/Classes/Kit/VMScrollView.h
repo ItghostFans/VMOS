@@ -11,7 +11,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 #if TARGET_OS_IPHONE
 @interface VMScrollView : UIScrollView
-#elif TARGET_OS_MAC
+#elif TARGET_OS_OSX
 @interface VMScrollView : NSScrollView
 #endif // #if TARGET_OS_IPHONE
 

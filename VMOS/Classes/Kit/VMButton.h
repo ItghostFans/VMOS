@@ -19,7 +19,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (assign, nonatomic) CGFloat itemSpacing;
 
 #if TARGET_OS_IPHONE
-#elif TARGET_OS_MAC
+#elif TARGET_OS_OSX
 @property(assign, nonatomic, readonly) VMControlState state;
 @property(assign, nonatomic, getter=isSelected) BOOL selected;
 #endif // #if TARGET_OS_IPHONE

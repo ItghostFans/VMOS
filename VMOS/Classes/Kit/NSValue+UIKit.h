@@ -12,7 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface NSValue (UIKit)
 
 #if TARGET_OS_IPHONE
-#elif TARGET_OS_MAC
+#elif TARGET_OS_OSX
 
 @property (assign, nonatomic, readonly) CGPoint CGPointValue;
 @property (assign, nonatomic, readonly) CGSize CGSizeValue;

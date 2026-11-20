@@ -37,5 +37,5 @@
 }
 
 @end
-#elif TARGET_OS_MAC
+#elif TARGET_OS_OSX
 #endif // #if TARGET_OS_IPHONE

@@ -11,7 +11,7 @@
 
 #if TARGET_OS_IPHONE
 
-#elif TARGET_OS_MAC
+#elif TARGET_OS_OSX
 
 @interface VMButtonCell ()
 //@property (weak, nonatomic) NSImageView *imageView;

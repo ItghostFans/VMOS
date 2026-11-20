@@ -21,7 +21,7 @@
     dispatch_once(&onceToken, ^{
 #if TARGET_OS_IPHONE
         [self runtime_swizzleSel:@selector(layoutSubviews) newSel:@selector(gradient_layoutSubviews) cls:self];
-#elif TARGET_OS_MAC
+#elif TARGET_OS_OSX
         [self runtime_swizzleSel:@selector(layout) newSel:@selector(gradient_layoutSubviews) cls:self];
 #endif // #if TARGET_OS_IPHONE
     });
@@ -54,7 +54,7 @@
     objc_setAssociatedObject(self, sel, @(gradient_angle), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 #if TARGET_OS_IPHONE
     [self setNeedsLayout];
-#elif TARGET_OS_MAC
+#elif TARGET_OS_OSX
     [self setNeedsLayout:YES];
 #endif // #if TARGET_OS_IPHONE
     
@@ -74,7 +74,7 @@
     const void * sel = @selector(gradient_startPoint);
 #if TARGET_OS_IPHONE
     NSValue *startPoint = [NSValue valueWithCGPoint:gradient_startPoint];
-#elif TARGET_OS_MAC
+#elif TARGET_OS_OSX
     NSValue *startPoint = [NSValue valueWithPoint:gradient_startPoint];
 #endif // #if TARGET_OS_IPHONE
     objc_setAssociatedObject(self, sel, startPoint, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
@@ -89,7 +89,7 @@
     const void * sel = @selector(gradient_endPoint);
 #if TARGET_OS_IPHONE
     NSValue *endPoint = [NSValue valueWithCGPoint:gradient_endPoint];
-#elif TARGET_OS_MAC
+#elif TARGET_OS_OSX
     NSValue *endPoint = [NSValue valueWithPoint:gradient_endPoint];
 #endif // #if TARGET_OS_IPHONE
     objc_setAssociatedObject(self, sel, endPoint, OBJC_ASSOCIATION_RETAIN_NONATOMIC);

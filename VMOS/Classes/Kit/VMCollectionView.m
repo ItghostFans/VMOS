@@ -11,7 +11,7 @@
 
 #if TARGET_OS_IPHONE
 
-#elif TARGET_OS_MAC
+#elif TARGET_OS_OSX
 
 - (void)setAlwaysBounceVertical:(BOOL)alwaysBounceVertical {
     _alwaysBounceVertical = alwaysBounceVertical;
@@ -60,7 +60,7 @@
 #if TARGET_OS_IPHONE
     [superview addSubview:self];
     _scrollView = (VMView *)self;
-#elif TARGET_OS_MAC
+#elif TARGET_OS_OSX
     VMScrollView *scrollView = VMScrollView.new;
     [superview addSubview:scrollView];
     _scrollView = (VMView *)scrollView;

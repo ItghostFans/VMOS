@@ -19,7 +19,7 @@ typedef NS_ENUM(NSInteger, VMTableViewCellStyle) {
 };
 
 @interface VMTableViewCell : UITableViewCell
-#elif TARGET_OS_MAC
+#elif TARGET_OS_OSX
 
 typedef NS_ENUM(NSInteger, VMTableViewCellStyle) {
     VMTableViewCellStyleDefault,

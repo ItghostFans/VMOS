@@ -7,7 +7,7 @@
 
 #if TARGET_OS_IPHONE
 #import <QuartzCore/QuartzCore.h>
-#elif TARGET_OS_MAC
+#elif TARGET_OS_OSX
 #import <Foundation/Foundation.h>
 #import <QuartzCore/QuartzCore.h>
 #endif // #if TARGET_OS_IPHONE
@@ -16,7 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 #if TARGET_OS_IPHONE
 typedef CADisplayLink VMDisplayLink;
-#elif TARGET_OS_MAC
+#elif TARGET_OS_OSX
 @interface VMDisplayLink : NSObject
 
 // CADisplayLink

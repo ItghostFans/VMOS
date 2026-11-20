@@ -10,7 +10,7 @@
 NS_ASSUME_NONNULL_BEGIN
 #if TARGET_OS_IPHONE
 @interface VMCollectionViewFlowLayout : UICollectionViewFlowLayout
-#elif TARGET_OS_MAC
+#elif TARGET_OS_OSX
 @interface VMCollectionViewFlowLayout : NSCollectionViewFlowLayout
 #endif // #if TARGET_OS_IPHONE
 

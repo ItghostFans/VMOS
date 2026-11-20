@@ -8,13 +8,13 @@
 #import "NSIndexPath+UIKit.h"
 
 #if TARGET_OS_IPHONE
-#elif TARGET_OS_MAC
+#elif TARGET_OS_OSX
 #import <AppKit/AppKit.h>
 #endif // #if TARGET_OS_IPHONE
 
 #if TARGET_OS_IPHONE
 
-#elif TARGET_OS_MAC
+#elif TARGET_OS_OSX
 
 @implementation NSIndexPath (UIKit)
 

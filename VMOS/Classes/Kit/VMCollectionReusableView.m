@@ -10,7 +10,7 @@
 @implementation VMCollectionReusableView
 
 #if TARGET_OS_IPHONE
-#elif TARGET_OS_MAC
+#elif TARGET_OS_OSX
 - (BOOL)isFlipped {
     return YES;
 }

@@ -10,7 +10,7 @@
 NS_ASSUME_NONNULL_BEGIN
 #if TARGET_OS_IPHONE
 @interface VMCollectionViewCell : UICollectionViewCell
-#elif TARGET_OS_MAC
+#elif TARGET_OS_OSX
 @interface VMCollectionViewCell : NSCollectionViewItem
 
 - (instancetype)initWithFrame:(CGRect)frame;

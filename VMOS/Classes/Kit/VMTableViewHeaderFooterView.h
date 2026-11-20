@@ -11,7 +11,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 #if TARGET_OS_IPHONE
 @interface VMTableViewHeaderFooterView : UITableViewHeaderFooterView
-#elif TARGET_OS_MAC
+#elif TARGET_OS_OSX
 @interface VMTableViewHeaderFooterView : NSTableHeaderView
 #endif // #if TARGET_OS_IPHONE
 

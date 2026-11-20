@@ -34,7 +34,7 @@ typedef NS_ENUM(NSInteger, VMTableViewRowAnimation) {
 };
 
 @interface VMTableView : UITableView
-#elif TARGET_OS_MAC
+#elif TARGET_OS_OSX
 
 typedef NS_ENUM(NSInteger, VMTableViewStyle) {
     VMTableViewStylePlain,          // regular table view

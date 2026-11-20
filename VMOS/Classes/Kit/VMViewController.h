@@ -7,7 +7,7 @@
 
 #if TARGET_OS_IPHONE
 #import <UIKit/UIKit.h>
-#elif TARGET_OS_MAC
+#elif TARGET_OS_OSX
 #import <AppKit/AppKit.h>
 #endif // #if TARGET_OS_IPHONE
 
@@ -15,7 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 #if TARGET_OS_IPHONE
 @interface VMViewController : UIViewController
-#elif TARGET_OS_MAC
+#elif TARGET_OS_OSX
 @interface VMViewController : NSViewController
 #endif // #if TARGET_OS_IPHONE
 

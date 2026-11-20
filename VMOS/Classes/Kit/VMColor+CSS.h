@@ -11,7 +11,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 #if TARGET_OS_IPHONE
 @interface UIColor (CSS)
-#elif TARGET_OS_MAC
+#elif TARGET_OS_OSX
 @interface NSColor (CSS)
 #endif // #if TARGET_OS_IPHONE
 

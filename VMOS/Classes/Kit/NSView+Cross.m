@@ -8,7 +8,7 @@
 #import "NSView+Cross.h"
 
 #if TARGET_OS_IPHONE
-#elif TARGET_OS_MAC
+#elif TARGET_OS_OSX
 
 @implementation NSView (Cross)
 

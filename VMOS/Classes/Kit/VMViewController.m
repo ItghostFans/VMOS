@@ -16,7 +16,7 @@
 - (CGFloat)titleBarHeight {
 #if TARGET_OS_IPHONE
     return 0.0f;
-#elif TARGET_OS_MAC
+#elif TARGET_OS_OSX
     NSWindow *window = self.view.window;
     if (window.styleMask & NSWindowStyleMaskFullSizeContentView) {
         NSButton *closeButton = [window standardWindowButton:NSWindowCloseButton];

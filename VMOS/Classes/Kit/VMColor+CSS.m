@@ -9,7 +9,7 @@
 
 #if TARGET_OS_IPHONE
 @implementation UIColor (CSS)
-#elif TARGET_OS_MAC
+#elif TARGET_OS_OSX
 @implementation NSColor (CSS)
 #endif // #if TARGET_OS_IPHONE
 

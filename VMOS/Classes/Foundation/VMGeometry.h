@@ -7,7 +7,7 @@
 
 #if TARGET_OS_IPHONE
 #import <UIKit/UIGeometry.h>
-#elif TARGET_OS_MAC
+#elif TARGET_OS_OSX
 #import <Foundation/NSGeometry.h>
 #endif // #if TARGET_OS_IPHONE
 
@@ -28,7 +28,7 @@ typedef UIEdgeInsets VMEdgeInsets;
 #define VMEdgeInsetsMake UIEdgeInsetsMake
 #define VMEdgeInsetsZero UIEdgeInsetsZero
 #define VMEdgeInsetsEqualToEdgeInsets UIEdgeInsetsEqualToEdgeInsets
-#elif TARGET_OS_MAC
+#elif TARGET_OS_OSX
 
 typedef NS_OPTIONS(NSUInteger, VMRectCorner) {
     VMRectCornerTopLeft     = 1 << 0,
@@ -53,7 +53,7 @@ extern NSDictionary *CGRectToObject(CGRect frame);
 extern CGRect CGRectFromObject(NSDictionary *object);
 
 #if TARGET_OS_IPHONE
-#elif TARGET_OS_MAC
+#elif TARGET_OS_OSX
 
 /// 兼容iOS
 /// - Parameter frame: Frame区域。
